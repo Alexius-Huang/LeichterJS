@@ -2,7 +2,7 @@
   "name": "leichter",
   "version": "1.0.0",
   "description": "Simple code highlighting feature!",
-  "main": "wax.js",
+  "main": "leichter.js",
   "author": "Maxwell Alexius",
   "license": "MIT",
   "dependencies": {
