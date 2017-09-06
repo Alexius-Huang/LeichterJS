@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono:300,400');
+
+.engz-comma,
+.engz-colon,
+.engz-keyword,
+.engz-operator,
+.engz-function,
+.engz-function-name,
+.engz-class-name {
+  font-weight: 400;
+}
+
+.engz-argument {
+  font-style: italic;
+}
+
+.engz-default,
+.engz-colon,
+.engz-semicolon,
+.engz-comma { color: #ddd; }
+
+.engz-keyword,
+.engz-operator  { color: #ff6192; }
+
+.engz-function { color: #47A3FF; }
+
+.engz-function-name,
+.engz-class-name { color: #61FFD3; }
+
+.engz-argument { color: #FFBC61 }
+
+.engz-string { color: #9AFF76; }
+
+.engz-number { color: #C049FE; }
+
+.engz-comment { color: #777; }
+
+.engz-left-parentheses,
+.engz-right-parentheses,
+.engz-left-bracket,
+.engz-right-bracket { color: #82C0FF; }
