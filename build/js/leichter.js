@@ -107,6 +107,14 @@ module.exports = function () {
       }
     }
 
+    /* Alias method if ignite which is the verb 'ignite' in German */
+
+  }, {
+    key: 'entz\xFCnden',
+    value: function entzNden() {
+      this.ignite();
+    }
+
     /* Directly ignite the syntax highlighting using class method */
 
   }], [{
@@ -186,6 +194,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.ignitePythonCode = ignitePythonCode;
 var lexPython = __webpack_require__(3).lexPython;
 var tokenizePython = __webpack_require__(4).tokenizePython;
+var className = 'lt';
 
 function ignitePythonCode(element) {
   var codeString = element.innerText;
@@ -207,7 +216,7 @@ function ignitePythonCode(element) {
       var token = _step.value;
 
       var codeSegment = document.createElement('span');
-      codeSegment.className = 'engz-' + token.type;
+      codeSegment.className = className + ' ' + className + '-' + token.type;
       codeSegment.innerText = token.value;
       element.appendChild(codeSegment);
     }

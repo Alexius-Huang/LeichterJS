@@ -1,10 +1,15 @@
 {
   "name": "leichter",
-  "version": "1.0.0",
+  "version": "0.0.1-alpha",
   "description": "Simple code highlighting feature!",
   "main": "leichter.js",
-  "author": "Maxwell Alexius",
+  "author": "Maxwell Alexius <destinydragon85614@gmail.com>",
   "license": "MIT",
+  "repository": {
+    "url": "https://github.com/Maxwell-Alexius/LeichterJS",
+    "type": "git"
+  },
+  "keywords": ["code", "highlighting"],
   "dependencies": {
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",

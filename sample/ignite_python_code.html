@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Ignite Python Code</title>
+
+  <link rel="stylesheet" href="../build/css/leichter.css" />
+  <script src="../build/js/leichter.js"></script>
+
+  <style>
+    html, body {
+      background-color: #333;
+      width: 100vw;
+      height: 100vh;
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+    }
+    div#wrapper {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+    pre {
+      position: absolute;
+      box-sizing: border-box;
+      background-color: #555;
+      margin: 0;
+      width: 500pt;
+      height: 400pt;
+      padding: 10pt;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      margin: auto;
+      overflow: auto;
+    }
+  </style>
+</head>
+<body>
+  <div id="wrapper">
+    <pre id="python-code">
+s = 0
+for i in range(10):
+    s += i
+print(i) # => 45
+
+def addition(a, b)
+    return a + b
+
+age = 18
+if age <= 18:
+    print("Young")
+elif age <= 60:
+    print("Adult")
+else:
+    print("Old Man")
+# => "Young"
+
+class Dog(Animal):
+    def __init__(self, name):
+        self.name = name
+        self.tricks = []
+    
+    def addTrick(trick)
+        self.tricks.append(trick)</pre>
+  </div>
+
+  <script>
+    var lighter = new Leichter({
+      lang: 'python',
+      element: 'python-code'
+    })
+
+    lighter.ignite(); // Or you can use lighter.entzünden
+  </script>
+</body>
+</html>
