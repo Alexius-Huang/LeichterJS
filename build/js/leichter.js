@@ -304,7 +304,7 @@ function lexPython(code) {
     var commentString = currentChar;
     readChar();
 
-    while (currentChar != '\n') {
+    while (currentChar !== undefined && currentChar != '\n') {
       commentString += currentChar;
       readChar();
     }
@@ -421,6 +421,8 @@ function lexPython(code) {
         readChar();
     }
   }
+
+  if (lexedValue) tokenizeLexedValue();
 
   return tokens;
 }

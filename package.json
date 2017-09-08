@@ -9,15 +9,21 @@
     "url": "https://github.com/Maxwell-Alexius/LeichterJS",
     "type": "git"
   },
-  "keywords": ["code", "highlighting"],
+  "keywords": [
+    "code",
+    "highlighting"
+  ],
   "dependencies": {
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-preset-es2015": "^6.24.1",
+    "expect.js": "^0.3.1",
+    "mocha": "^3.5.0",
     "webpack": "^3.5.5"
   },
   "scripts": {
     "babel": "babel --presets es2015 lib/leichter.js -o build/js/leichter.js",
-    "webpack": "webpack -w"
+    "webpack": "webpack -w",
+    "test": "mocha --compilers js:babel-core/register"
   }
 }
