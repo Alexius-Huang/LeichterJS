@@ -7,3 +7,4 @@ cache:
     - node_modules
 script:
   - "yarn test test/lexer"
+  - "yarn test test/tokenizer"

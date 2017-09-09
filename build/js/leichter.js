@@ -484,10 +484,29 @@ function tokenizePython(tokens) {
     peekToken = tokens[tokenPosition + 1];
   }
 
+  function parseArray() {
+    while (currentToken && currentToken.type != 'right-bracket') {
+      if (currentToken.type === 'default' && !isNaN(currentToken.value)) {
+        currentToken.type = 'number';
+      }
+      nextToken();
+    }
+  }
+
   function parseArgumentTokens() {
-    while (currentToken && currentToken.type !== 'right-parentheses') {
+    while (currentToken && !(currentToken.type === 'right-parentheses' && peekToken.type === 'colon')) {
       if (currentToken.type === 'default') {
         currentToken.type = 'argument';
+      } else if (currentToken.type === 'operator' && currentToken.value === '=') {
+        /* Argument with Default Value */
+        while (currentToken && currentToken.type !== 'comma') {
+          if (currentToken.type === 'default' && !isNaN(currentToken.value)) {
+            currentToken.type = 'number';
+          } else if (currentToken.type === 'left-bracket') {
+            parseArray();
+          }
+          nextToken();
+        }
       }
       nextToken();
     }
@@ -544,7 +563,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.igniteRubyCode = igniteRubyCode;
 var lexRuby = __webpack_require__(6).lexRuby;
-var tokenizeRuby = __webpack_require__(8).tokenizeRuby;
+var tokenizeRuby = __webpack_require__(7).tokenizeRuby;
 var className = 'lt';
 
 function igniteRubyCode(element) {
@@ -781,8 +800,7 @@ function lexRuby(code) {
 }
 
 /***/ }),
-/* 7 */,
-/* 8 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
