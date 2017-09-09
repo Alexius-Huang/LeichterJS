@@ -1,5 +1,7 @@
 # LeichterJS
 
+[![Build Status](https://travis-ci.org/Maxwell-Alexius/LeichterJS.svg?branch=master)](https://travis-ci.org/Maxwell-Alexius/LeichterJS)
+
 ## Simple Code Highlighting Tool Named by Lighter in German
 
 ### Installation
