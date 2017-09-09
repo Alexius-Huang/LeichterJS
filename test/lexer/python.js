@@ -1,4 +1,5 @@
 const expect = require('expect.js')
+const Python = require('../samples/python.js').Python
 let lexPython = require('../../lib/ignition/lexer/lex_python').lexPython
 
 const T = {
@@ -16,64 +17,9 @@ const T = {
 }
 
 describe('Python Lexer', function() {
-  let importStatement = 'import os.path as path'
-  let ifElseStatement = [
-    'age = 16',
-    'if age <= 18:',
-    '    print("Young")',
-    'elif age <= 60:',
-    '    print("Adult")',
-    'else:',
-    '    print("Old")',
-    '# => "Young"'
-  ].join('\n')
-  let forLoopStatement = [
-    's = 0',
-    'for i in range(10):',
-    '    s += i',
-    '# s = 45'
-  ].join('\n')
-  let whileLoopStatement = [
-    'i = 0',
-    'while i < 10:',
-    '    i += 1',
-    '# i = 10'
-  ].join('\n')
-  let defineMethodStatement = [
-    'def hello(name):',
-    '    print("Hello! " + name + " !")',
-    '',
-    'hello("Maxwell") # => "Hello! Maxwell!"'
-  ].join('\n')
-  let singleLineComment = [
-    '2 ** 10        # => 1024',
-    'print("Hello") # => "Hello"',
-    '# => "Comment"'
-  ].join('\n')
-  /* TODO: Support Escaped Character */
-  let singleLineString = [
-    '"Hello World!"',
-    'print("Maxwell " + " Alexius")',
-    '\'Single quoted string\''
-  ].join('\n')
-  let multiLineString = [
-    '"""Test Multi-line string',
-    '[ i * 2 for i in range(10) ]',
-    'hello world print("Maxwell")',
-    '"""',
-    'print("Test Multi-line string:" + """',
-    '  LeichterJS created by',
-    '     Maxwell Alexius  """',
-    '',
-    '" Hello Again! " + """ Maxwell',
-    '',
-    'Alexius',
-    '"""'
-  ].join('\n')
-
   describe('Lex Python Statements', function() {
     it('parses the import statement', function() {
-      let actualResults = lexPython(importStatement)
+      let actualResults = lexPython(Python.importStatement)
       let expectedResults = [
         T.keyword('import'), T.space(), T.default('os.path'), T.space(), T.keyword('as'), T.space(), T.default('path')
       ]
@@ -82,7 +28,7 @@ describe('Python Lexer', function() {
 
     describe('Conditional Statements', function() {
       it('parses the if...else... statement', function() {
-        let actualResults = lexPython(ifElseStatement)
+        let actualResults = lexPython(Python.ifElseStatement)
         let expectedResults = [
           T.default('age'), T.space(), T.operator('='), T.space(), T.default('16'), T.newline(),
           T.keyword('if'), T.space(), T.default('age'), T.space(), T.operator('<'), T.operator('='), T.space(), T.default('18'), T.colon(), T.newline(),
@@ -100,7 +46,7 @@ describe('Python Lexer', function() {
 
     describe('Looping Statements', function() {
       it('parses the for...in... loop statement', function() {
-        let actualResults = lexPython(forLoopStatement)
+        let actualResults = lexPython(Python.forLoopStatement)
         let expectedResults = [
           T.default('s'), T.space(), T.operator('='), T.space(), T.default('0'), T.newline(),
           T.keyword('for'), T.space(), T.default('i'), T.space(), T.keyword('in'), T.space(), T.func('range'), T.leftParentheses(), T.default('10'), T.rightParentheses(), T.colon(), T.newline(),
@@ -112,7 +58,7 @@ describe('Python Lexer', function() {
       })
 
       it('parses the while loop statement', function() {
-        let actualResults = lexPython(whileLoopStatement)
+        let actualResults = lexPython(Python.whileLoopStatement)
         let expectedResults = [
           T.default('i'), T.space(), T.operator('='), T.space(), T.default('0'), T.newline(),
           T.keyword('while'), T.space(), T.default('i'), T.space(), T.operator('<'), T.space(), T.default('10'), T.colon(), T.newline(),
@@ -126,7 +72,7 @@ describe('Python Lexer', function() {
 
     describe('Define method statement', function() {
       it('parses the define method statement', function() {
-        let actualResults = lexPython(defineMethodStatement)
+        let actualResults = lexPython(Python.defineMethodStatement)
         let expectedResults = [
           T.keyword('def'), T.space(), T.default('hello'), T.leftParentheses(), T.default('name'), T.rightParentheses(), T.colon(), T.newline(),
           T.space('    '), T.func('print'), T.leftParentheses(), T.string('"Hello! "'), T.space(), T.operator('+'), T.space(), T.default('name'), T.space(), T.operator('+'), T.space(), T.string('" !"'), T.rightParentheses(), T.newline(),
@@ -141,7 +87,7 @@ describe('Python Lexer', function() {
 
   describe('Comment', function() {
     it('parses the single line comment', function() {
-      let actualResults = lexPython(singleLineComment)
+      let actualResults = lexPython(Python.singleLineComment)
       let expectedResults = [
         T.default('2'), T.space(), T.operator('*'), T.operator('*'), T.space(), T.default('10'), T.space('        '), T.comment('# => 1024'), T.newline(),
         T.func('print'), T.leftParentheses(), T.string('"Hello"'), T.rightParentheses(), T.space(), T.comment('# => "Hello"'), T.newline(),
@@ -154,7 +100,7 @@ describe('Python Lexer', function() {
 
   describe('String', function() {
     it('parses the single line string', function() {
-      let actualResults = lexPython(singleLineString)
+      let actualResults = lexPython(Python.singleLineString)
       let expectedResults = [
         T.string('"Hello World!"'), T.newline(),
         T.func('print'), T.leftParentheses(), T.string('"Maxwell "'), T.space(), T.operator('+'), T.space(), T.string('" Alexius"'), T.rightParentheses(), T.newline(),
@@ -165,7 +111,7 @@ describe('Python Lexer', function() {
     })
     
     it('parses the multi-line string', function() {
-      let actualResults = lexPython(multiLineString)
+      let actualResults = lexPython(Python.multiLineString)
       let expectedResults = [
         T.string('"""Test Multi-line string\n[ i * 2 for i in range(10) ]\nhello world print("Maxwell")\n"""'), T.newline(),
         T.func('print'), T.leftParentheses(), T.string('"Test Multi-line string:"'), T.space(), T.operator('+'), T.space(), T.string('"""\n  LeichterJS created by\n     Maxwell Alexius  """'), T.newline(),
