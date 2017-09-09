@@ -274,17 +274,48 @@ function lexPython(code) {
     var lexedString = currentChar;
     readChar();
 
-    while (currentChar != lexedString[0] && currentChar !== '\n') {
+    if (currentChar === lexedString[0] && peekChar === lexedString) {
+      /* Multi-line String Case */
       lexedString += currentChar;
       readChar();
-    }
-
-    if (currentChar !== '\n') {
-      /* Current charcacter is the closing string */
       lexedString += currentChar;
       readChar();
+
+      var stringClosing = [lexedString[0], lexedString[0], lexedString[0]].join('');
+
+      while (currentChar && currentChar + peekChar + code[charPosition + 2] != stringClosing) {
+        // && false) {
+        // console.log('Current: ' + currentChar)
+        // console.log('Peeked: ' + peekChar)
+        // console.log('lexed: ' + lexedString)
+        // debugger
+        // console.clear()
+        lexedString += currentChar;
+        readChar();
+      }
+
+      for (var i = 0; i < 3; i++) {
+
+        if (currentChar) {
+          lexedString += currentChar;
+        } else break;
+        readChar();
+      }
+    } else {
+      /* Single Line String Case */
+      while (currentChar != lexedString[0] && currentChar !== '\n') {
+        lexedString += currentChar;
+        readChar();
+      }
+
+      if (currentChar !== '\n') {
+        /* Current charcacter is the closing string */
+        lexedString += currentChar;
+        readChar();
+      }
     }
 
+    /* Push String Token */
     tokens.push({ type: 'string', value: lexedString });
   }
 

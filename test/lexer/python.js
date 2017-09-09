@@ -11,7 +11,7 @@ const T = {
   func: (value)        => ({ type: 'function',          value: value }),
   leftParentheses: ()  => ({ type: 'left-parentheses',  value: '(' }),
   rightParentheses: () => ({ type: 'right-parentheses', value: ')' }),
-  string: (value)      => ({ type: 'string',            value: `"${value}"` }),
+  string: (value)      => ({ type: 'string',            value: value }),
   comment: (value)     => ({ type: 'comment',           value: value })
 }
 
@@ -45,6 +45,31 @@ describe('Python Lexer', function() {
     '',
     'hello("Maxwell") # => "Hello! Maxwell!"'
   ].join('\n')
+  let singleLineComment = [
+    '2 ** 10        # => 1024',
+    'print("Hello") # => "Hello"',
+    '# => "Comment"'
+  ].join('\n')
+  /* TODO: Support Escaped Character */
+  let singleLineString = [
+    '"Hello World!"',
+    'print("Maxwell " + " Alexius")',
+    '\'Single quoted string\''
+  ].join('\n')
+  let multiLineString = [
+    '"""Test Multi-line string',
+    '[ i * 2 for i in range(10) ]',
+    'hello world print("Maxwell")',
+    '"""',
+    'print("Test Multi-line string:" + """',
+    '  LeichterJS created by',
+    '     Maxwell Alexius  """',
+    '',
+    '" Hello Again! " + """ Maxwell',
+    '',
+    'Alexius',
+    '"""'
+  ].join('\n')
 
   describe('Lex Python Statements', function() {
     it('parses the import statement', function() {
@@ -61,11 +86,11 @@ describe('Python Lexer', function() {
         let expectedResults = [
           T.default('age'), T.space(), T.operator('='), T.space(), T.default('16'), T.newline(),
           T.keyword('if'), T.space(), T.default('age'), T.space(), T.operator('<'), T.operator('='), T.space(), T.default('18'), T.colon(), T.newline(),
-          T.space('    '), T.func('print'), T.leftParentheses(), T.string('Young'), T.rightParentheses(), T.newline(),
+          T.space('    '), T.func('print'), T.leftParentheses(), T.string('"Young"'), T.rightParentheses(), T.newline(),
           T.keyword('elif'), T.space(), T.default('age'), T.space(), T.operator('<'), T.operator('='), T.space(), T.default('60'), T.colon(), T.newline(),
-          T.space('    '), T.func('print'), T.leftParentheses(), T.string('Adult'), T.rightParentheses(), T.newline(),
+          T.space('    '), T.func('print'), T.leftParentheses(), T.string('"Adult"'), T.rightParentheses(), T.newline(),
           T.keyword('else'), T.colon(), T.newline(),
-          T.space('    '), T.func('print'), T.leftParentheses(), T.string('Old'), T.rightParentheses(), T.newline(),
+          T.space('    '), T.func('print'), T.leftParentheses(), T.string('"Old"'), T.rightParentheses(), T.newline(),
           T.comment('# => "Young"')
         ]
 
@@ -99,18 +124,56 @@ describe('Python Lexer', function() {
       })
     })
 
-    describe('define method statement', function() {
+    describe('Define method statement', function() {
       it('parses the define method statement', function() {
         let actualResults = lexPython(defineMethodStatement)
         let expectedResults = [
           T.keyword('def'), T.space(), T.default('hello'), T.leftParentheses(), T.default('name'), T.rightParentheses(), T.colon(), T.newline(),
-          T.space('    '), T.func('print'), T.leftParentheses(), T.string('Hello! '), T.space(), T.operator('+'), T.space(), T.default('name'), T.space(), T.operator('+'), T.space(), T.string(' !'), T.rightParentheses(), T.newline(),
+          T.space('    '), T.func('print'), T.leftParentheses(), T.string('"Hello! "'), T.space(), T.operator('+'), T.space(), T.default('name'), T.space(), T.operator('+'), T.space(), T.string('" !"'), T.rightParentheses(), T.newline(),
           T.newline(),
-          T.default('hello'), T.leftParentheses(), T.string('Maxwell'), T.rightParentheses(), T.space(), T.comment('# => "Hello! Maxwell!"')
+          T.default('hello'), T.leftParentheses(), T.string('"Maxwell"'), T.rightParentheses(), T.space(), T.comment('# => "Hello! Maxwell!"')
         ]
 
         checkLexedResult(expectedResults, actualResults)
       })
+    })
+  })
+
+  describe('Comment', function() {
+    it('parses the single line comment', function() {
+      let actualResults = lexPython(singleLineComment)
+      let expectedResults = [
+        T.default('2'), T.space(), T.operator('*'), T.operator('*'), T.space(), T.default('10'), T.space('        '), T.comment('# => 1024'), T.newline(),
+        T.func('print'), T.leftParentheses(), T.string('"Hello"'), T.rightParentheses(), T.space(), T.comment('# => "Hello"'), T.newline(),
+        T.comment('# => "Comment"')
+      ]
+
+      checkLexedResult(expectedResults, actualResults)
+    })
+  })
+
+  describe('String', function() {
+    it('parses the single line string', function() {
+      let actualResults = lexPython(singleLineString)
+      let expectedResults = [
+        T.string('"Hello World!"'), T.newline(),
+        T.func('print'), T.leftParentheses(), T.string('"Maxwell "'), T.space(), T.operator('+'), T.space(), T.string('" Alexius"'), T.rightParentheses(), T.newline(),
+        T.string('\'Single quoted string\'')
+      ]
+
+      checkLexedResult(expectedResults, actualResults)
+    })
+    
+    it('parses the multi-line string', function() {
+      let actualResults = lexPython(multiLineString)
+      let expectedResults = [
+        T.string('"""Test Multi-line string\n[ i * 2 for i in range(10) ]\nhello world print("Maxwell")\n"""'), T.newline(),
+        T.func('print'), T.leftParentheses(), T.string('"Test Multi-line string:"'), T.space(), T.operator('+'), T.space(), T.string('"""\n  LeichterJS created by\n     Maxwell Alexius  """'), T.newline(),
+        T.newline(),
+        T.string('" Hello Again! "'), T.space(), T.operator('+'), T.space(), T.string('""" Maxwell\n\nAlexius\n"""')
+      ]
+
+      checkLexedResult(expectedResults, actualResults)
     })
   })
 
