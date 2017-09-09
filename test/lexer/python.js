@@ -1,20 +1,7 @@
-const expect = require('expect.js')
+const checkTokenResult = require('../helpers/check_token_result').checkTokenResult
+const T = require('../helpers/python_tokens').T
 const Python = require('../samples/python.js').Python
 let lexPython = require('../../lib/ignition/lexer/lex_python').lexPython
-
-const T = {
-  space: (value = ' ') => ({ type: 'space',             value: value }),
-  newline: ()          => ({ type: 'newline',           value: '\n' }),
-  default: (value)     => ({ type: 'default',           value: value }),
-  keyword: (value)     => ({ type: 'keyword',           value: value }),
-  operator: (value)    => ({ type: 'operator',          value: value }),
-  colon: ()            => ({ type: 'colon',             value: ':' }),
-  func: (value)        => ({ type: 'function',          value: value }),
-  leftParentheses: ()  => ({ type: 'left-parentheses',  value: '(' }),
-  rightParentheses: () => ({ type: 'right-parentheses', value: ')' }),
-  string: (value)      => ({ type: 'string',            value: value }),
-  comment: (value)     => ({ type: 'comment',           value: value })
-}
 
 describe('Python Lexer', function() {
   describe('Lex Python Statements', function() {
@@ -23,7 +10,7 @@ describe('Python Lexer', function() {
       let expectedResults = [
         T.keyword('import'), T.space(), T.default('os.path'), T.space(), T.keyword('as'), T.space(), T.default('path')
       ]
-      checkLexedResult(expectedResults, actualResults)
+      checkTokenResult(expectedResults, actualResults)
     })
 
     describe('Conditional Statements', function() {
@@ -40,7 +27,7 @@ describe('Python Lexer', function() {
           T.comment('# => "Young"')
         ]
 
-        checkLexedResult(expectedResults, actualResults)
+        checkTokenResult(expectedResults, actualResults)
       })
     })
 
@@ -54,7 +41,7 @@ describe('Python Lexer', function() {
           T.comment('# s = 45')
         ]
 
-        checkLexedResult(expectedResults, actualResults)
+        checkTokenResult(expectedResults, actualResults)
       })
 
       it('parses the while loop statement', function() {
@@ -66,7 +53,7 @@ describe('Python Lexer', function() {
           T.comment('# i = 10')
         ]
 
-        checkLexedResult(expectedResults, actualResults)
+        checkTokenResult(expectedResults, actualResults)
       })
     })
 
@@ -80,7 +67,29 @@ describe('Python Lexer', function() {
           T.default('hello'), T.leftParentheses(), T.string('"Maxwell"'), T.rightParentheses(), T.space(), T.comment('# => "Hello! Maxwell!"')
         ]
 
-        checkLexedResult(expectedResults, actualResults)
+        checkTokenResult(expectedResults, actualResults)
+      })
+
+      it('parses the define method statement with argument', function() {
+        let actualResults = lexPython(Python.defineMethodStatementWithDefaultValue)
+        let expectedResults = [
+          T.default('n'), T.space(), T.operator('='), T.space(), T.string('"Maxwell"'), T.newline(),
+          T.keyword('def'), T.space(), T.leftParentheses(), T.default('name'), T.space(), T.operator('='), T.space(), T.default('n'), T.rightParentheses(), T.colon(), T.newline(),
+          T.space('    '), T.func('print'), T.leftParentheses(), T.string('"Hello! "'), T.space(), T.operator('+'), T.space(), T.default('name'), T.rightParentheses(), T.newline(),
+          T.default('hello'), T.leftParentheses(), T.rightParentheses(), T.space(), T.comment('# => "Hello! Maxwell"')
+        ]
+      })
+      
+      it('parse the argument tokens in define method statement with complex default values', function() {
+        const actualResults = lexPython(Python.defineMethodStatementWithComplexDefaultValue)
+        const expectedResults = [
+          T.keyword('def'), T.space(), T.default('hello'), T.leftParentheses(), T.default('arg1'), T.space(), T.operator('='), T.space(), T.string('"Hello"'),
+          T.comma(), T.space(), T.default('arg2'), T.space(), T.operator('='), T.space(), T.default('123'),
+          T.comma(), T.space(), T.default('arg3'), T.space(), T.operator('='), T.space(), T.keyword('True'),
+          T.comma(), T.space(), T.default('arg4'), T.space(), T.operator('='), T.space(), T.leftBracket(), T.default('456'), T.comma(), T.space(), T.keyword('False'), T.comma(), T.space(), T.default('name'), T.rightBracket(), T.rightParentheses(), T.colon()
+        ]
+  
+        checkTokenResult(expectedResults, actualResults)
       })
     })
   })
@@ -94,7 +103,7 @@ describe('Python Lexer', function() {
         T.comment('# => "Comment"')
       ]
 
-      checkLexedResult(expectedResults, actualResults)
+      checkTokenResult(expectedResults, actualResults)
     })
   })
 
@@ -107,7 +116,7 @@ describe('Python Lexer', function() {
         T.string('\'Single quoted string\'')
       ]
 
-      checkLexedResult(expectedResults, actualResults)
+      checkTokenResult(expectedResults, actualResults)
     })
     
     it('parses the multi-line string', function() {
@@ -119,7 +128,7 @@ describe('Python Lexer', function() {
         T.string('" Hello Again! "'), T.space(), T.operator('+'), T.space(), T.string('""" Maxwell\n\nAlexius\n"""')
       ]
 
-      checkLexedResult(expectedResults, actualResults)
+      checkTokenResult(expectedResults, actualResults)
     })
   })
 
@@ -129,24 +138,3 @@ describe('Python Lexer', function() {
   //   })
   // })
 })
-
-
-function checkLexedResult(expectedResults, actualResults) {
-  let index = 0
-  let tokenCount = 1
-  let lineCount = 1
-
-  for (let token of expectedResults) {
-    /* Debug Log */
-    if (token.type !== actualResults[index].type || token.value !== actualResults[index].value) {
-      console.log(`Mismatched token - line: ${lineCount}, number: ${tokenCount}`)
-    }
-
-    /* Check Tokens */
-    expect(token.type).to.be(actualResults[index].type)
-    expect(token.value).to.be(actualResults[index].value)
-
-    if (token.type === 'newline') { lineCount++; tokenCount = 1; } else tokenCount++
-    index++
-  }
-}
