@@ -11,11 +11,13 @@
 .lt-operator,
 .lt-function,
 .lt-function-name,
-.lt-class-name {
+.lt-class-name,
+.lt-inherited-class {
   font-weight: 400;
 }
 
-.lt-argument {
+.lt-argument,
+.lt-inherited-class {
   font-style: italic;
 }
 
@@ -32,6 +34,7 @@
 .lt-function-name,
 .lt-class-name { color: #61FFD3; }
 
+.lt-inherited-class,
 .lt-argument { color: #FFBC61 }
 
 .lt-string { color: #9AFF76; }
