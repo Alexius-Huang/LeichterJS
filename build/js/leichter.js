@@ -855,6 +855,10 @@ function tokenizeRuby(tokens) {
     }
   }
 
+  function isGlobalVariable() {
+    return currentToken.value[0] === '$';
+  }
+
   while (currentToken) {
     switch (currentToken.type) {
       case 'keyword':
@@ -875,6 +879,8 @@ function tokenizeRuby(tokens) {
       case 'default':
         if (!isNaN(currentToken.value)) {
           currentToken.type = 'number';
+        } else if (isGlobalVariable(currentToken)) {
+          currentToken.type = 'global-variable';
         }
         nextToken();
         break;
