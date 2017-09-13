@@ -7,7 +7,8 @@ export const Ruby = {
 
   /* Global Variable */
   globalVariable: [
-    '$ENV = "development"'
+    '$ENV = "development"',
+    '$Maxwell'
   ].join('\n'),
 
   /* Conditional Statement */
