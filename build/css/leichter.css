@@ -34,6 +34,8 @@
 .lt-function-name,
 .lt-class-name { color: #61FFD3; }
 
+.lt-global-variable { color: #FDFF7E; }
+
 .lt-inherited-class,
 .lt-argument { color: #FFBC61 }
 
