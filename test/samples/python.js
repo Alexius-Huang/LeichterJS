@@ -72,4 +72,17 @@ export const Python = {
     'Alexius',
     '"""'
   ].join('\n'),
+
+  /* Expressions */
+  /* TODO: Support for backslash statement
+    Example: a = 1 + \
+                 2 * \
+                 3 / 4
+  */
+  arithmeticExpression: [
+    '1 + 2 * 3 - (4 / 5) % 6'
+  ].join('\n'),
+  logicalExpression: [
+    'True or False and not False'
+  ].join('\n')
 }
