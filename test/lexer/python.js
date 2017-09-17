@@ -132,9 +132,23 @@ describe('Python Lexer', function() {
     })
   })
 
-  // TODO: Expressions
-  // describe('Lex Python Experssion', function() {
-  //   it('parses the import statement', function() {
-  //   })
-  // })
+  describe('Lex Python Experssion', function() {
+    it('parses the arithmetic expressions', function() {
+      let actualResults = lexPython(Python.arithmeticExpression)
+      let expectedResults = [
+        T.default('1'), T.space(), T.operator('+'), T.space(), T.default('2'), T.space(), T.operator('*'), T.space(), T.default('3'), T.space(), T.operator('-'), T.space(), T.leftParentheses(), T.default('4'), T.space(), T.operator('/'), T.space(), T.default('5'), T.rightParentheses(), T.space(), T.operator('%'), T.space(), T.default('6')
+      ]
+
+      checkTokenResult(expectedResults, actualResults)
+    })
+
+    it('parses the logical expressions', function() {
+      let actualResults = lexPython(Python.logicalExpression)
+      let expectedResults = [
+        T.keyword('True'), T.space(), T.keyword('or'), T.space(), T.keyword('False'), T.space(), T.keyword('and'), T.space(), T.keyword('not'), T.space(), T.keyword('False')
+      ]
+
+      checkTokenResult(expectedResults, actualResults)
+    })
+  })
 })

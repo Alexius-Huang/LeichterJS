@@ -6,6 +6,17 @@ let tokenizePython = require('../../lib/ignition/tokenizer/tokenize_python').tok
 
 describe('Python Tokenizer', function() {
   /* TODO: Tokenizing Number Token */
+  describe('Tokenizing Number Token', function() {
+    it('parses the number token from the arithmetic expression', function() {
+      let actualResults = tokenizePython(lexPython(Python.arithmeticExpression))
+      let expectedResults = [
+        T.number('1'), T.space(), T.operator('+'), T.space(), T.number('2'), T.space(), T.operator('*'), T.space(), T.number('3'), T.space(), T.operator('-'), T.space(), T.leftParentheses(), T.number('4'), T.space(), T.operator('/'), T.space(), T.number('5'), T.rightParentheses(), T.space(), T.operator('%'), T.space(), T.number('6')
+      ]
+
+      checkTokenResult(expectedResults, actualResults)
+    })
+  })
+
   /* TODO: Tokenizing Function & Class Name Token */
   describe('Tokenizing Argument Token', function() {
     it('parses the argument tokens in define method statement', function() {
