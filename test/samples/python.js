@@ -72,4 +72,12 @@ export const Python = {
     'Alexius',
     '"""'
   ].join('\n'),
+
+  /* Expressions */
+  logicExpressions: [
+    'if 1 > 2 or ( 1 < 3 and 4 != 5 ) and not 3 == None:',
+    '    output = "Hooray!"',
+    '    print(output if not False and True else "Nothing here.")',
+    '# => "Hooray!"'
+  ].join('\n'),  
 }

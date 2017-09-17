@@ -132,9 +132,17 @@ describe('Python Lexer', function() {
     })
   })
 
-  // TODO: Expressions
-  // describe('Lex Python Experssion', function() {
-  //   it('parses the import statement', function() {
-  //   })
-  // })
+  describe('Lex Python Experssion', function() {
+    it('parses the logic expression', function() {
+      let actualResults = lexPython(Python.logicExpressions)
+      let expectedResults = [
+        T.keyword('if'), T.space(), T.default('1'), T.space(), T.operator('>'), T.space(), T.default('2'), T.space(), T.keyword('or'), T.space(), T.leftParentheses(), T.space(), T.default('1'), T.space(), T.operator('<'), T.space(), T.default('3'), T.space(), T.keyword('and'), T.space(), T.default('4'), T.space(), T.operator('!'), T.operator('='), T.space(), T.default('5'), T.space(), T.rightParentheses(), T.space(), T.keyword('and'), T.space(), T.keyword('not'), T.space(), T.default('3'), T.space(), T.operator('='), T.operator('='), T.space(), T.keyword('None'), T.colon(), T.newline(), 
+        T.space('    '), T.default('output'), T.space(), T.operator('='), T.space(), T.string('"Hooray!"'), T.newline(), 
+        T.space('    '), T.func('print'), T.leftParentheses(), T.default('output'), T.space(), T.keyword('if'), T.space(), T.keyword('not'), T.space(), T.keyword('False'), T.space(), T.keyword('and'), T.space(), T.keyword('True'), T.space(), T.keyword('else'), T.space(), T.string('"Nothing here."'), T.rightParentheses(), T.newline(), 
+        T.comment('# => "Hooray!"')
+      ]
+
+      checkTokenResult(expectedResults, actualResults)
+    })
+  })
 })
