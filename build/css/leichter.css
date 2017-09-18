@@ -8,6 +8,9 @@
 .lt-comma,
 .lt-colon,
 .lt-keyword,
+.lt-boolean,
+.lt-nullity,
+.lt-logical,
 .lt-operator,
 .lt-function,
 .lt-function-name,
@@ -29,14 +32,17 @@
 .lt-keyword,
 .lt-operator  { color: #ff6192; }
 
-.lt-function { color: #47A3FF; }
+.lt-function,
+.lt-logical { color: #47A3FF; }
 
 .lt-function-name,
 .lt-class-name { color: #61FFD3; }
 
-.lt-global-variable { color: #FDFF7E; }
+.lt-global-variable,
+.lt-nullity { color: #FDFF7E; }
 
 .lt-inherited-class,
+.lt-boolean,
 .lt-argument { color: #FFBC61 }
 
 .lt-string { color: #9AFF76; }
