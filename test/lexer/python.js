@@ -36,7 +36,7 @@ describe('Python Lexer', function() {
         let actualResults = lexPython(Python.forLoopStatement)
         let expectedResults = [
           T.default('s'), T.space(), T.operator('='), T.space(), T.default('0'), T.newline(),
-          T.keyword('for'), T.space(), T.default('i'), T.space(), T.keyword('in'), T.space(), T.func('range'), T.leftParentheses(), T.default('10'), T.rightParentheses(), T.colon(), T.newline(),
+          T.keyword('for'), T.space(), T.default('i'), T.space(), T.logical('in'), T.space(), T.func('range'), T.leftParentheses(), T.default('10'), T.rightParentheses(), T.colon(), T.newline(),
           T.space('    '), T.default('s'), T.space(), T.operator('+'), T.operator('='), T.space(), T.default('i'), T.newline(),
           T.comment('# s = 45')
         ]
@@ -85,8 +85,8 @@ describe('Python Lexer', function() {
         const expectedResults = [
           T.keyword('def'), T.space(), T.default('hello'), T.leftParentheses(), T.default('arg1'), T.space(), T.operator('='), T.space(), T.string('"Hello"'),
           T.comma(), T.space(), T.default('arg2'), T.space(), T.operator('='), T.space(), T.default('123'),
-          T.comma(), T.space(), T.default('arg3'), T.space(), T.operator('='), T.space(), T.keyword('True'),
-          T.comma(), T.space(), T.default('arg4'), T.space(), T.operator('='), T.space(), T.leftBracket(), T.default('456'), T.comma(), T.space(), T.keyword('False'), T.comma(), T.space(), T.default('name'), T.rightBracket(), T.rightParentheses(), T.colon()
+          T.comma(), T.space(), T.default('arg3'), T.space(), T.operator('='), T.space(), T.boolean('True'),
+          T.comma(), T.space(), T.default('arg4'), T.space(), T.operator('='), T.space(), T.leftBracket(), T.default('456'), T.comma(), T.space(), T.boolean('False'), T.comma(), T.space(), T.default('name'), T.rightBracket(), T.rightParentheses(), T.colon()
         ]
   
         checkTokenResult(expectedResults, actualResults)
@@ -145,7 +145,7 @@ describe('Python Lexer', function() {
     it('parses the logical expressions', function() {
       let actualResults = lexPython(Python.logicalExpression)
       let expectedResults = [
-        T.keyword('True'), T.space(), T.keyword('or'), T.space(), T.keyword('False'), T.space(), T.keyword('and'), T.space(), T.keyword('not'), T.space(), T.keyword('False')
+        T.boolean('True'), T.space(), T.logical('or'), T.space(), T.boolean('False'), T.space(), T.logical('and'), T.space(), T.logical('not'), T.space(), T.boolean('False')
       ]
 
       checkTokenResult(expectedResults, actualResults)

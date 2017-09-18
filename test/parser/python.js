@@ -48,8 +48,8 @@ describe('Python Tokenizer', function() {
       const expectedResults = [
         T.keyword('def'), T.space(), T.funcName('hello'), T.leftParentheses(), T.argument('arg1'), T.space(), T.operator('='), T.space(), T.string('"Hello"'),
         T.comma(), T.space(), T.argument('arg2'), T.space(), T.operator('='), T.space(), T.number('123'),
-        T.comma(), T.space(), T.argument('arg3'), T.space(), T.operator('='), T.space(), T.keyword('True'),
-        T.comma(), T.space(), T.argument('arg4'), T.space(), T.operator('='), T.space(), T.leftBracket(), T.number('456'), T.comma(), T.space(), T.keyword('False'), T.comma(), T.space(), T.default('name'), T.rightBracket(), T.rightParentheses(), T.colon()
+        T.comma(), T.space(), T.argument('arg3'), T.space(), T.operator('='), T.space(), T.boolean('True'),
+        T.comma(), T.space(), T.argument('arg4'), T.space(), T.operator('='), T.space(), T.leftBracket(), T.number('456'), T.comma(), T.space(), T.boolean('False'), T.comma(), T.space(), T.default('name'), T.rightBracket(), T.rightParentheses(), T.colon()
       ]
 
       checkTokenResult(expectedResults, actualResults)
