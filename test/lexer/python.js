@@ -4,8 +4,20 @@ const Python = require('../samples/python.js').Python
 let lexPython = require('../../lib/ignition/lexer/lex_python').lexPython
 
 describe('Python Lexer', function() {
+  describe('Lex Python Fundamental Tokens', function() {
+    it('lexes the boolean, nullity and logical tokens in Python lexer', function() {
+      let actualResults = lexPython('True and False or not None\n1 in range(10)')
+      let expectedResults = [
+        T.boolean('True'), T.space(), T.logical('and'), T.space(), T.boolean('False'), T.space(), T.logical('or'), T.space(), T.logical('not'), T.space(), T.nullity('None'), T.newline(),
+        T.default('1'), T.space(), T.logical('in'), T.space(), T.func('range'), T.leftParentheses(), T.default('10'), T.rightParentheses()
+      ]
+
+      checkTokenResult(expectedResults, actualResults)
+    })
+  })
+
   describe('Lex Python Statements', function() {
-    it('parses the import statement', function() {
+    it('lexes the import statement', function() {
       let actualResults = lexPython(Python.importStatement)
       let expectedResults = [
         T.keyword('import'), T.space(), T.default('os.path'), T.space(), T.keyword('as'), T.space(), T.default('path')
@@ -14,7 +26,7 @@ describe('Python Lexer', function() {
     })
 
     describe('Conditional Statements', function() {
-      it('parses the if...else... statement', function() {
+      it('lexes the if...else... statement', function() {
         let actualResults = lexPython(Python.ifElseStatement)
         let expectedResults = [
           T.default('age'), T.space(), T.operator('='), T.space(), T.default('16'), T.newline(),
@@ -32,7 +44,7 @@ describe('Python Lexer', function() {
     })
 
     describe('Looping Statements', function() {
-      it('parses the for...in... loop statement', function() {
+      it('lexes the for...in... loop statement', function() {
         let actualResults = lexPython(Python.forLoopStatement)
         let expectedResults = [
           T.default('s'), T.space(), T.operator('='), T.space(), T.default('0'), T.newline(),
@@ -44,7 +56,7 @@ describe('Python Lexer', function() {
         checkTokenResult(expectedResults, actualResults)
       })
 
-      it('parses the while loop statement', function() {
+      it('lexes the while loop statement', function() {
         let actualResults = lexPython(Python.whileLoopStatement)
         let expectedResults = [
           T.default('i'), T.space(), T.operator('='), T.space(), T.default('0'), T.newline(),
@@ -58,7 +70,7 @@ describe('Python Lexer', function() {
     })
 
     describe('Define method statement', function() {
-      it('parses the define method statement', function() {
+      it('lexes the define method statement', function() {
         let actualResults = lexPython(Python.defineMethodStatement)
         let expectedResults = [
           T.keyword('def'), T.space(), T.default('hello'), T.leftParentheses(), T.default('name'), T.rightParentheses(), T.colon(), T.newline(),
@@ -70,7 +82,7 @@ describe('Python Lexer', function() {
         checkTokenResult(expectedResults, actualResults)
       })
 
-      it('parses the define method statement with argument', function() {
+      it('lexes the define method statement with argument', function() {
         let actualResults = lexPython(Python.defineMethodStatementWithDefaultValue)
         let expectedResults = [
           T.default('n'), T.space(), T.operator('='), T.space(), T.string('"Maxwell"'), T.newline(),
@@ -95,7 +107,7 @@ describe('Python Lexer', function() {
   })
 
   describe('Comment', function() {
-    it('parses the single line comment', function() {
+    it('lexes the single line comment', function() {
       let actualResults = lexPython(Python.singleLineComment)
       let expectedResults = [
         T.default('2'), T.space(), T.operator('*'), T.operator('*'), T.space(), T.default('10'), T.space('        '), T.comment('# => 1024'), T.newline(),
@@ -108,7 +120,7 @@ describe('Python Lexer', function() {
   })
 
   describe('String', function() {
-    it('parses the single line string', function() {
+    it('lexes the single line string', function() {
       let actualResults = lexPython(Python.singleLineString)
       let expectedResults = [
         T.string('"Hello World!"'), T.newline(),
@@ -119,7 +131,7 @@ describe('Python Lexer', function() {
       checkTokenResult(expectedResults, actualResults)
     })
     
-    it('parses the multi-line string', function() {
+    it('lexes the multi-line string', function() {
       let actualResults = lexPython(Python.multiLineString)
       let expectedResults = [
         T.string('"""Test Multi-line string\n[ i * 2 for i in range(10) ]\nhello world print("Maxwell")\n"""'), T.newline(),
@@ -133,7 +145,7 @@ describe('Python Lexer', function() {
   })
 
   describe('Lex Python Experssion', function() {
-    it('parses the arithmetic expressions', function() {
+    it('lexes the arithmetic expressions', function() {
       let actualResults = lexPython(Python.arithmeticExpression)
       let expectedResults = [
         T.default('1'), T.space(), T.operator('+'), T.space(), T.default('2'), T.space(), T.operator('*'), T.space(), T.default('3'), T.space(), T.operator('-'), T.space(), T.leftParentheses(), T.default('4'), T.space(), T.operator('/'), T.space(), T.default('5'), T.rightParentheses(), T.space(), T.operator('%'), T.space(), T.default('6')
@@ -142,7 +154,7 @@ describe('Python Lexer', function() {
       checkTokenResult(expectedResults, actualResults)
     })
 
-    it('parses the logical expressions', function() {
+    it('lexes the logical expressions', function() {
       let actualResults = lexPython(Python.logicalExpression)
       let expectedResults = [
         T.boolean('True'), T.space(), T.logical('or'), T.space(), T.boolean('False'), T.space(), T.logical('and'), T.space(), T.logical('not'), T.space(), T.boolean('False')
