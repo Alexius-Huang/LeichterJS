@@ -196,7 +196,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ignitePythonCode = ignitePythonCode;
 var lexPython = __webpack_require__(3).lexPython;
-var tokenizePython = __webpack_require__(4).tokenizePython;
+var parsePython = __webpack_require__(4).parsePython;
 var className = 'lt';
 
 function ignitePythonCode(element) {
@@ -206,7 +206,7 @@ function ignitePythonCode(element) {
   var lexedTokens = lexPython(codeString);
 
   /* Secondary parse for complex combination syntax feature */
-  var tokens = tokenizePython(lexedTokens);
+  var tokens = parsePython(lexedTokens);
 
   /* Parsing Python code highlighting */
   element.innerText = '';
@@ -370,6 +370,7 @@ function lexPython(code) {
       case '-':
       case '*':
       case '/':
+      case '%':
       case '>':
       case '<':
       case '|':
@@ -464,16 +465,14 @@ function lexPython(code) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.tokenizePython = tokenizePython;
+exports.parsePython = parsePython;
 /*
- * Python Tokenizer
+ * Python Parser
  * 
- * Basically tokenizer is for the secondary parse of the tokens
- * in order to parse complex token combinations or types
- *
+ * Basically parser is for the parsing complex token combinations or types
  */
 
-function tokenizePython(tokens) {
+function parsePython(tokens) {
   var tokenPosition = 0;
   var currentToken = tokens[0];
   var peekToken = tokens[1];
@@ -563,7 +562,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.igniteRubyCode = igniteRubyCode;
 var lexRuby = __webpack_require__(6).lexRuby;
-var tokenizeRuby = __webpack_require__(7).tokenizeRuby;
+var parseRuby = __webpack_require__(7).parseRuby;
 var className = 'lt';
 
 function igniteRubyCode(element) {
@@ -573,7 +572,7 @@ function igniteRubyCode(element) {
   var lexedTokens = lexRuby(codeString);
 
   /* Secondary parse for complex combination syntax feature */
-  var tokens = tokenizeRuby(lexedTokens);
+  var tokens = parseRuby(lexedTokens);
 
   /* Parsing Ruby code highlighting */
   element.innerText = '';
@@ -809,16 +808,14 @@ function lexRuby(code) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.tokenizeRuby = tokenizeRuby;
+exports.parseRuby = parseRuby;
 /*
- * Ruby Tokenizer
+ * Ruby Parser
  * 
- * Basically tokenizer is for the secondary parse of the tokens
- * in order to parse complex token combinations or types
- *
+ * Basically parser is for the parsing complex token combinations or types
  */
 
-function tokenizeRuby(tokens) {
+function parseRuby(tokens) {
   var tokenPosition = 0;
   var currentToken = tokens[0];
   var peekToken = tokens[1];

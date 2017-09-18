@@ -2,13 +2,13 @@ const checkTokenResult = require('../helpers/check_token_result').checkTokenResu
 const T = require('../helpers/python_tokens').T
 const Python = require('../samples/python.js').Python
 let lexPython = require('../../lib/ignition/lexer/lex_python').lexPython
-let tokenizePython = require('../../lib/ignition/tokenizer/tokenize_python').tokenizePython
+let parsePython = require('../../lib/ignition/parser/parse_python').parsePython
 
 describe('Python Tokenizer', function() {
-  /* TODO: Tokenizing Number Token */
-  describe('Tokenizing Number Token', function() {
+  /* TODO: Parsing Number Token */
+  describe('Parsing Number Token', function() {
     it('parses the number token from the arithmetic expression', function() {
-      let actualResults = tokenizePython(lexPython(Python.arithmeticExpression))
+      let actualResults = parsePython(lexPython(Python.arithmeticExpression))
       let expectedResults = [
         T.number('1'), T.space(), T.operator('+'), T.space(), T.number('2'), T.space(), T.operator('*'), T.space(), T.number('3'), T.space(), T.operator('-'), T.space(), T.leftParentheses(), T.number('4'), T.space(), T.operator('/'), T.space(), T.number('5'), T.rightParentheses(), T.space(), T.operator('%'), T.space(), T.number('6')
       ]
@@ -17,10 +17,10 @@ describe('Python Tokenizer', function() {
     })
   })
 
-  /* TODO: Tokenizing Function & Class Name Token */
-  describe('Tokenizing Argument Token', function() {
+  /* TODO: Parsing Function & Class Name Token */
+  describe('Parsing Argument Token', function() {
     it('parses the argument tokens in define method statement', function() {
-      const actualResults = tokenizePython(lexPython(Python.defineMethodStatement))
+      const actualResults = parsePython(lexPython(Python.defineMethodStatement))
       const expectedResults = [
         T.keyword('def'), T.space(), T.funcName('hello'), T.leftParentheses(), T.argument('name'), T.rightParentheses(), T.colon(), T.newline(),
         T.space('    '), T.func('print'), T.leftParentheses(), T.string('"Hello! "'), T.space(), T.operator('+'), T.space(), T.default('name'), T.space(), T.operator('+'), T.space(), T.string('" !"'), T.rightParentheses(), T.newline(),
@@ -32,7 +32,7 @@ describe('Python Tokenizer', function() {
     })
 
     it('parses the argument tokens in define method statement with default values', function() {
-      const actualResults = tokenizePython(lexPython(Python.defineMethodStatementWithDefaultValue))
+      const actualResults = parsePython(lexPython(Python.defineMethodStatementWithDefaultValue))
       const expectedResults = [
         T.default('n'), T.space(), T.operator('='), T.space(), T.string('"Maxwell"'), T.newline(),
         T.keyword('def'), T.space(), T.funcName('hello'), T.leftParentheses(), T.argument('name'), T.space(), T.operator('='), T.space(), T.default('n'), T.rightParentheses(), T.colon(), T.newline(),
@@ -44,7 +44,7 @@ describe('Python Tokenizer', function() {
     })
 
     it('parses the argument tokens in define method statement with complex default values', function() {
-      const actualResults = tokenizePython(lexPython(Python.defineMethodStatementWithComplexDefaultValue))
+      const actualResults = parsePython(lexPython(Python.defineMethodStatementWithComplexDefaultValue))
       const expectedResults = [
         T.keyword('def'), T.space(), T.funcName('hello'), T.leftParentheses(), T.argument('arg1'), T.space(), T.operator('='), T.space(), T.string('"Hello"'),
         T.comma(), T.space(), T.argument('arg2'), T.space(), T.operator('='), T.space(), T.number('123'),
