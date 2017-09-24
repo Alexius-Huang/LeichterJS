@@ -3,4 +3,5 @@ eslint:
   config_file: .eslintrc
 
 jshint:
+  config_file: .jshintrc
   ignore_file: test/*
