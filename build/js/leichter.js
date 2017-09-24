@@ -223,6 +223,8 @@ function ignitePythonCode(element) {
       codeSegment.innerText = token.value;
       element.appendChild(codeSegment);
     }
+
+    /* Dynamically Parse Escaped Character Style */
   } catch (err) {
     _didIteratorError = true;
     _iteratorError = err;
@@ -234,6 +236,47 @@ function ignitePythonCode(element) {
     } finally {
       if (_didIteratorError) {
         throw _iteratorError;
+      }
+    }
+  }
+
+  var stringElements = element.getElementsByClassName('lt-string');
+  var _iteratorNormalCompletion2 = true;
+  var _didIteratorError2 = false;
+  var _iteratorError2 = undefined;
+
+  try {
+    for (var _iterator2 = stringElements[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+      var e = _step2.value;
+
+      var string = e.innerText,
+          result = '',
+          value = '',
+          char = void 0;
+      for (var i = 0, l = string.length; i < l; i++) {
+        var _char = string[i];
+        if (_char === '\\') {
+          if (value) {
+            result += value;
+            value = '';
+          }
+          result += '<span class="lt lt-escaped-character">' + (_char + string[++i]) + '</span>';
+        } else value += _char;
+      }
+      if (value) result += char;
+      e.innerHTML = result;
+    }
+  } catch (err) {
+    _didIteratorError2 = true;
+    _iteratorError2 = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion2 && _iterator2.return) {
+        _iterator2.return();
+      }
+    } finally {
+      if (_didIteratorError2) {
+        throw _iteratorError2;
       }
     }
   }
