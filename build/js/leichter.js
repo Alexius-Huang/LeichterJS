@@ -77,7 +77,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var appendNode = __webpack_require__(1).appendNode;
 var ignitePythonCode = __webpack_require__(2).ignitePythonCode;
-var igniteRubyCode = __webpack_require__(5).igniteRubyCode;
+var igniteRubyCode = __webpack_require__(6).igniteRubyCode;
 
 module.exports = function () {
   function Leichter() {
@@ -86,9 +86,11 @@ module.exports = function () {
     _classCallCheck(this, Leichter);
 
     var lang = options.lang,
-        element = options.element;
+        element = options.element,
+        enableEscapedCharacter = options.enableEscapedCharacter;
 
     this.lang = lang;
+    this.enableEscapedCharacter = enableEscapedCharacter;
     this.element = document.getElementById(element);
   }
 
@@ -102,7 +104,9 @@ module.exports = function () {
 
       switch (this.lang) {
         case 'python':
-          ignitePythonCode(this.element);break;
+          ignitePythonCode(this.element, this.enableEscapedCharacter);
+          break;
+
         case 'ruby':
           igniteRubyCode(this.element);break;
         default:
@@ -196,10 +200,12 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ignitePythonCode = ignitePythonCode;
 var lexPython = __webpack_require__(3).lexPython;
-var parsePython = __webpack_require__(4).parsePython;
+var parsePython = __webpack_require__(5).parsePython;
 var className = 'lt';
 
 function ignitePythonCode(element) {
+  var enableEscapedCharacter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
   var codeString = element.innerText;
 
   /* Parse the code for the first time into fundamental tokens */
@@ -223,6 +229,8 @@ function ignitePythonCode(element) {
       codeSegment.innerText = token.value;
       element.appendChild(codeSegment);
     }
+
+    /* Dynamically Parse Escaped Character Style */
   } catch (err) {
     _didIteratorError = true;
     _iteratorError = err;
@@ -234,6 +242,49 @@ function ignitePythonCode(element) {
     } finally {
       if (_didIteratorError) {
         throw _iteratorError;
+      }
+    }
+  }
+
+  if (enableEscapedCharacter) {
+    var stringElements = element.getElementsByClassName('lt-string');
+    var _iteratorNormalCompletion2 = true;
+    var _didIteratorError2 = false;
+    var _iteratorError2 = undefined;
+
+    try {
+      for (var _iterator2 = stringElements[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+        var e = _step2.value;
+
+        var string = e.innerText,
+            result = '',
+            value = '',
+            char = void 0;
+        for (var i = 0, l = string.length; i < l; i++) {
+          var _char = string[i];
+          if (_char === '\\') {
+            if (value) {
+              result += value;
+              value = '';
+            }
+            result += '<span class="lt lt-escaped-character">' + (_char + string[++i]) + '</span>';
+          } else value += _char;
+        }
+        if (value) result += value;
+        e.innerHTML = result;
+      }
+    } catch (err) {
+      _didIteratorError2 = true;
+      _iteratorError2 = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion2 && _iterator2.return) {
+          _iterator2.return();
+        }
+      } finally {
+        if (_didIteratorError2) {
+          throw _iteratorError2;
+        }
       }
     }
   }
@@ -250,7 +301,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.lexPython = lexPython;
-var K = __webpack_require__(10);
+var K = __webpack_require__(4);
 
 String.prototype.last = function () {
   return this[this.length - 1];
@@ -286,6 +337,13 @@ function lexPython(code) {
       var stringClosing = [lexedString[0], lexedString[0], lexedString[0]].join('');
 
       while (currentChar && currentChar + peekChar + code[charPosition + 2] != stringClosing) {
+
+        /* Escaped Character Case */
+        if (currentChar === '\\') {
+          lexedString += currentChar;
+          readChar();
+        }
+
         lexedString += currentChar;
         readChar();
       }
@@ -299,6 +357,13 @@ function lexPython(code) {
     } else {
       /* Single Line String Case */
       while (currentChar != lexedString[0] && currentChar !== '\n') {
+
+        /* Escaped Character Case */
+        if (currentChar === '\\') {
+          lexedString += currentChar;
+          readChar();
+        }
+
         lexedString += currentChar;
         readChar();
       }
@@ -489,6 +554,22 @@ function lexPython(code) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+var $keyword = exports.$keyword = ['as', 'assert', 'break', 'class', 'continue', 'def', 'del', 'elif', 'else', 'except', 'finally', 'for', 'from', 'global', 'if', 'import', 'lambda', 'nonlocal', 'pass', 'raise', 'return', 'try', 'while', 'with', 'yield'];
+var $function = exports.$function = ['abs', 'dict', 'help', 'min', 'setattr', 'all', 'dir', 'hex', 'next', 'slice', 'any', 'divmod', 'id', 'object', 'sorted', 'ascii', 'enumerate', 'input', 'oct', 'staticmethod', 'bin', 'eval', 'int', 'open', 'str', 'bool', 'exec', 'isinstance', 'ord', 'sum', 'bytearray', 'filter', 'issubclass', 'pow', 'super', 'bytes', 'float', 'iter', 'print', 'tuple', 'callable', 'format', 'len', 'property', 'type', 'chr', 'frozenset', 'list', 'range', 'vars', 'classmethod', 'getattr', 'locals', 'repr', 'zip', 'compile', 'globals', 'map', 'reversed', '_import_', 'complex', 'hasattr', 'max', 'round', 'delattr', 'hash', 'memoryview', 'set'];
+var $logical = exports.$logical = ['and', 'or', 'not', 'in', 'is'];
+var $boolean = exports.$boolean = ['False', 'True'];
+var $nullity = exports.$nullity = ['None'];
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.parsePython = parsePython;
 /*
  * Python Parser
@@ -575,7 +656,7 @@ function parsePython(tokens) {
 }
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -585,8 +666,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.igniteRubyCode = igniteRubyCode;
-var lexRuby = __webpack_require__(6).lexRuby;
-var parseRuby = __webpack_require__(7).parseRuby;
+var lexRuby = __webpack_require__(7).lexRuby;
+var parseRuby = __webpack_require__(8).parseRuby;
 var className = 'lt';
 
 function igniteRubyCode(element) {
@@ -630,7 +711,7 @@ function igniteRubyCode(element) {
 }
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -823,7 +904,7 @@ function lexRuby(code) {
 }
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -913,24 +994,6 @@ function parseRuby(tokens) {
 
   return tokens;
 }
-
-/***/ }),
-/* 8 */,
-/* 9 */,
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var $keyword = exports.$keyword = ['as', 'assert', 'break', 'class', 'continue', 'def', 'del', 'elif', 'else', 'except', 'finally', 'for', 'from', 'global', 'if', 'import', 'lambda', 'nonlocal', 'pass', 'raise', 'return', 'try', 'while', 'with', 'yield'];
-var $function = exports.$function = ['abs', 'dict', 'help', 'min', 'setattr', 'all', 'dir', 'hex', 'next', 'slice', 'any', 'divmod', 'id', 'object', 'sorted', 'ascii', 'enumerate', 'input', 'oct', 'staticmethod', 'bin', 'eval', 'int', 'open', 'str', 'bool', 'exec', 'isinstance', 'ord', 'sum', 'bytearray', 'filter', 'issubclass', 'pow', 'super', 'bytes', 'float', 'iter', 'print', 'tuple', 'callable', 'format', 'len', 'property', 'type', 'chr', 'frozenset', 'list', 'range', 'vars', 'classmethod', 'getattr', 'locals', 'repr', 'zip', 'compile', 'globals', 'map', 'reversed', '_import_', 'complex', 'hasattr', 'max', 'round', 'delattr', 'hash', 'memoryview', 'set'];
-var $logical = exports.$logical = ['and', 'or', 'not', 'in', 'is'];
-var $boolean = exports.$boolean = ['False', 'True'];
-var $nullity = exports.$nullity = ['None'];
 
 /***/ })
 /******/ ]);
