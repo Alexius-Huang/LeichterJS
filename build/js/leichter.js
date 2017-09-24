@@ -86,9 +86,11 @@ module.exports = function () {
     _classCallCheck(this, Leichter);
 
     var lang = options.lang,
-        element = options.element;
+        element = options.element,
+        enableEscapedCharacter = options.enableEscapedCharacter;
 
     this.lang = lang;
+    this.enableEscapedCharacter = enableEscapedCharacter;
     this.element = document.getElementById(element);
   }
 
@@ -102,7 +104,9 @@ module.exports = function () {
 
       switch (this.lang) {
         case 'python':
-          ignitePythonCode(this.element);break;
+          ignitePythonCode(this.element, this.enableEscapedCharacter);
+          break;
+
         case 'ruby':
           igniteRubyCode(this.element);break;
         default:
@@ -200,6 +204,8 @@ var parsePython = __webpack_require__(5).parsePython;
 var className = 'lt';
 
 function ignitePythonCode(element) {
+  var enableEscapedCharacter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
   var codeString = element.innerText;
 
   /* Parse the code for the first time into fundamental tokens */
@@ -240,43 +246,45 @@ function ignitePythonCode(element) {
     }
   }
 
-  var stringElements = element.getElementsByClassName('lt-string');
-  var _iteratorNormalCompletion2 = true;
-  var _didIteratorError2 = false;
-  var _iteratorError2 = undefined;
+  if (enableEscapedCharacter) {
+    var stringElements = element.getElementsByClassName('lt-string');
+    var _iteratorNormalCompletion2 = true;
+    var _didIteratorError2 = false;
+    var _iteratorError2 = undefined;
 
-  try {
-    for (var _iterator2 = stringElements[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-      var e = _step2.value;
-
-      var string = e.innerText,
-          result = '',
-          value = '',
-          char = void 0;
-      for (var i = 0, l = string.length; i < l; i++) {
-        var _char = string[i];
-        if (_char === '\\') {
-          if (value) {
-            result += value;
-            value = '';
-          }
-          result += '<span class="lt lt-escaped-character">' + (_char + string[++i]) + '</span>';
-        } else value += _char;
-      }
-      if (value) result += char;
-      e.innerHTML = result;
-    }
-  } catch (err) {
-    _didIteratorError2 = true;
-    _iteratorError2 = err;
-  } finally {
     try {
-      if (!_iteratorNormalCompletion2 && _iterator2.return) {
-        _iterator2.return();
+      for (var _iterator2 = stringElements[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+        var e = _step2.value;
+
+        var string = e.innerText,
+            result = '',
+            value = '',
+            char = void 0;
+        for (var i = 0, l = string.length; i < l; i++) {
+          var _char = string[i];
+          if (_char === '\\') {
+            if (value) {
+              result += value;
+              value = '';
+            }
+            result += '<span class="lt lt-escaped-character">' + (_char + string[++i]) + '</span>';
+          } else value += _char;
+        }
+        if (value) result += value;
+        e.innerHTML = result;
       }
+    } catch (err) {
+      _didIteratorError2 = true;
+      _iteratorError2 = err;
     } finally {
-      if (_didIteratorError2) {
-        throw _iteratorError2;
+      try {
+        if (!_iteratorNormalCompletion2 && _iterator2.return) {
+          _iterator2.return();
+        }
+      } finally {
+        if (_didIteratorError2) {
+          throw _iteratorError2;
+        }
       }
     }
   }

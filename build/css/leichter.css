@@ -39,7 +39,8 @@
 .lt-class-name { color: #61FFD3; }
 
 .lt-global-variable,
-.lt-nullity { color: #FDFF7E; }
+.lt-nullity,
+.lt-escaped-character { color: #FDFF7E; }
 
 .lt-inherited-class,
 .lt-boolean,
