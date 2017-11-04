@@ -302,6 +302,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.lexPython = lexPython;
 var K = __webpack_require__(4);
+var M = __webpack_require__(9).$charMap;
 
 String.prototype.last = function () {
   return this[this.length - 1];
@@ -441,103 +442,35 @@ function lexPython(code) {
     }
   }
 
+  /* Setting function as values in character mapping */
+  M.set(' ', readSpace);
+  M.set('"', readString);
+  M.set('\'', readString);
+  M.set('#', readComment);
+
+  /* Start Lexing */
   while (currentChar !== undefined) {
-    switch (currentChar) {
-      case ' ':
-        tokenizeLexedValue();
-        readSpace();
-        break;
 
-      case '"':
-      case '\'':
-        tokenizeLexedValue();
-        readString();
-        break;
+    /* Maps to special character and convert into tokens */
+    if (M.has(currentChar)) {
+      tokenizeLexedValue();
 
-      case '=':
-      case '+':
-      case '-':
-      case '*':
-      case '/':
-      case '%':
-      case '>':
-      case '<':
-      case '|':
-      case '&':
-        tokenizeLexedValue();
-        tokens.push({ type: 'operator', value: currentChar });
+      var value = M.get(currentChar);
+      if (typeof value === 'string') {
+        tokens.push({ type: value, value: currentChar });
         readChar();
-        break;
-
-      case ':':
-        tokenizeLexedValue();
-        tokens.push({ type: 'colon', value: ':' });
-        readChar();
-        break;
-
-      case '[':
-        tokenizeLexedValue();
-        tokens.push({ type: 'left-bracket', value: '[' });
-        readChar();
-        break;
-
-      case ']':
-        tokenizeLexedValue();
-        tokens.push({ type: 'right-bracket', value: ']' });
-        readChar();
-        break;
-
-      case '(':
-        tokenizeLexedValue();
-        tokens.push({ type: 'left-parentheses', value: '(' });
-        readChar();
-        break;
-
-      case ')':
-        tokenizeLexedValue();
-        tokens.push({ type: 'right-parentheses', value: ')' });
-        readChar();
-        break;
-
-      case '{':
-        tokenizeLexedValue();
-        tokens.push({ type: 'left-brace', value: '{' });
-        readChar();
-        break;
-
-      case '}':
-        tokenizeLexedValue();
-        tokens.push({ type: 'right-brace', value: '}' });
-        readChar();
-        break;
-
-      case ',':
-        tokenizeLexedValue();
-        tokens.push({ type: 'comma', value: ',' });
-        readChar();
-        break;
-
-      case ';':
-        tokenizeLexedValue();
-        tokens.push({ type: 'semicolon', value: ':' });
-        readChar();
-        break;
-
-      case '\n':
-        tokenizeLexedValue();
-        tokens.push({ type: 'newline', value: '\n' });
-        readChar();
-        break;
-
-      case '#':
-        tokenizeLexedValue();
-        readComment();
-        break;
-
-      default:
+      } else if (typeof value === 'function') {
+        /* Call function for specific lexing method */
+        value();
+      } else {
+        console.log('Error');
+      }
+    }
+    /* Parse default identifier */
+    else {
         lexedValue += currentChar;
         readChar();
-    }
+      }
   }
 
   if (lexedValue) tokenizeLexedValue();
@@ -996,6 +929,26 @@ function parseRuby(tokens) {
 
   return tokens;
 }
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var $charMap = exports.$charMap = new Map([
+/* Implemented a readSpace function in python lexing */
+[' ', 'READ_SPACE_FUNC'],
+
+/* Implemented a readString function in python lexing */
+['"', 'READ_STRING_FUNC'], ['\'', 'READ_STRING_FUNC'], ['=', 'operator'], ['+', 'operator'], ['-', 'operator'], ['*', 'operator'], ['/', 'operator'], ['%', 'operator'], ['>', 'operator'], ['<', 'operator'], ['|', 'operator'], ['&', 'operator'], [':', 'colon'], ['[', 'left-bracket'], [']', 'right-bracket'], ['(', 'left-parentheses'], [')', 'right-parentheses'], ['{', 'left-brace'], ['}', 'right-brace'], [',', 'comma'], [';', 'semicolon'], ['\n', 'newline'],
+
+/* Implement a readComment function in python lexing */
+['#', 'READ_COMMENT_FUNC']]);
 
 /***/ })
 /******/ ]);
