@@ -530,6 +530,7 @@ function lexPython(code) {
         break;
 
       case '#':
+        tokenizeLexedValue();
         readComment();
         break;
 
@@ -889,6 +890,7 @@ function lexRuby(code) {
         break;
 
       case '#':
+        tokenizeLexedValue();
         readComment();
         break;
 
