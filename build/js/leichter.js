@@ -73,15 +73,15 @@ var Leichter =
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _ignite_python_code = __webpack_require__(2);
+var _ignite_python_code = __webpack_require__(1);
 
 var _ignite_python_code2 = _interopRequireDefault(_ignite_python_code);
 
-var _ignite_ruby_code = __webpack_require__(7);
+var _ignite_ruby_code = __webpack_require__(6);
 
 var _ignite_ruby_code2 = _interopRequireDefault(_ignite_ruby_code);
 
-var _ignite_html_code = __webpack_require__(10);
+var _ignite_html_code = __webpack_require__(9);
 
 var _ignite_html_code2 = _interopRequireDefault(_ignite_html_code);
 
@@ -89,7 +89,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var appendNode = __webpack_require__(1).appendNode;
+var appendNode = __webpack_require__(14).appendNode;
 
 module.exports = function () {
   function Leichter() {
@@ -158,63 +158,9 @@ module.exports = function () {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.appendNode = appendNode;
-function appendNode(element, params) {
-  /* Create child element */
-  var child = document.createElement(params.name);
-  child.className = params.classList.join(' ');
-  child.id = params.id;
-
-  if (params.attributes) {
-    for (var key in params.attributes) {
-      child.setAttribute(key, params.attributes[key]);
-    }
-  }
-
-  element.appendChild(child);
-
-  /* Append to grand child element */
-  if (params.children) {
-    var _iteratorNormalCompletion = true;
-    var _didIteratorError = false;
-    var _iteratorError = undefined;
-
-    try {
-      for (var _iterator = params.children[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-        var grandChildInfo = _step.value;
-
-        appendNode(child, grandChildInfo);
-      }
-    } catch (err) {
-      _didIteratorError = true;
-      _iteratorError = err;
-    } finally {
-      try {
-        if (!_iteratorNormalCompletion && _iterator.return) {
-          _iterator.return();
-        }
-      } finally {
-        if (_didIteratorError) {
-          throw _iteratorError;
-        }
-      }
-    }
-  }
-}
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
 exports.default = ignitePythonCode;
-var lexPython = __webpack_require__(3).lexPython;
-var parsePython = __webpack_require__(6).parsePython;
+var lexPython = __webpack_require__(2).lexPython;
+var parsePython = __webpack_require__(5).parsePython;
 var className = 'lt';
 
 function ignitePythonCode(element) {
@@ -305,7 +251,7 @@ function ignitePythonCode(element) {
 }
 
 /***/ }),
-/* 3 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -316,7 +262,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.lexPython = lexPython;
 
-var _python = __webpack_require__(5);
+var _python = __webpack_require__(3);
 
 var K = __webpack_require__(4);
 
@@ -496,23 +442,7 @@ function lexPython(code) {
 }
 
 /***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var $keyword = exports.$keyword = ['as', 'assert', 'break', 'class', 'continue', 'def', 'del', 'elif', 'else', 'except', 'finally', 'for', 'from', 'global', 'if', 'import', 'lambda', 'nonlocal', 'pass', 'raise', 'return', 'try', 'while', 'with', 'yield'];
-var $function = exports.$function = ['abs', 'dict', 'help', 'min', 'setattr', 'all', 'dir', 'hex', 'next', 'slice', 'any', 'divmod', 'id', 'object', 'sorted', 'ascii', 'enumerate', 'input', 'oct', 'staticmethod', 'bin', 'eval', 'int', 'open', 'str', 'bool', 'exec', 'isinstance', 'ord', 'sum', 'bytearray', 'filter', 'issubclass', 'pow', 'super', 'bytes', 'float', 'iter', 'print', 'tuple', 'callable', 'format', 'len', 'property', 'type', 'chr', 'frozenset', 'list', 'range', 'vars', 'classmethod', 'getattr', 'locals', 'repr', 'zip', 'compile', 'globals', 'map', 'reversed', '_import_', 'complex', 'hasattr', 'max', 'round', 'delattr', 'hash', 'memoryview', 'set'];
-var $logical = exports.$logical = ['and', 'or', 'not', 'in', 'is'];
-var $boolean = exports.$boolean = ['False', 'True'];
-var $nullity = exports.$nullity = ['None'];
-
-/***/ }),
-/* 5 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -534,7 +464,23 @@ var $charMap = exports.$charMap = new Map([
 exports.default = $charMap;
 
 /***/ }),
-/* 6 */
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var $keyword = exports.$keyword = ['as', 'assert', 'break', 'class', 'continue', 'def', 'del', 'elif', 'else', 'except', 'finally', 'for', 'from', 'global', 'if', 'import', 'lambda', 'nonlocal', 'pass', 'raise', 'return', 'try', 'while', 'with', 'yield'];
+var $function = exports.$function = ['abs', 'dict', 'help', 'min', 'setattr', 'all', 'dir', 'hex', 'next', 'slice', 'any', 'divmod', 'id', 'object', 'sorted', 'ascii', 'enumerate', 'input', 'oct', 'staticmethod', 'bin', 'eval', 'int', 'open', 'str', 'bool', 'exec', 'isinstance', 'ord', 'sum', 'bytearray', 'filter', 'issubclass', 'pow', 'super', 'bytes', 'float', 'iter', 'print', 'tuple', 'callable', 'format', 'len', 'property', 'type', 'chr', 'frozenset', 'list', 'range', 'vars', 'classmethod', 'getattr', 'locals', 'repr', 'zip', 'compile', 'globals', 'map', 'reversed', '_import_', 'complex', 'hasattr', 'max', 'round', 'delattr', 'hash', 'memoryview', 'set'];
+var $logical = exports.$logical = ['and', 'or', 'not', 'in', 'is'];
+var $boolean = exports.$boolean = ['False', 'True'];
+var $nullity = exports.$nullity = ['None'];
+
+/***/ }),
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -629,7 +575,7 @@ function parsePython(tokens) {
 }
 
 /***/ }),
-/* 7 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -639,8 +585,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = igniteRubyCode;
-var lexRuby = __webpack_require__(8).lexRuby;
-var parseRuby = __webpack_require__(9).parseRuby;
+var lexRuby = __webpack_require__(7).lexRuby;
+var parseRuby = __webpack_require__(8).parseRuby;
 var className = 'lt';
 
 function igniteRubyCode(element) {
@@ -684,7 +630,7 @@ function igniteRubyCode(element) {
 }
 
 /***/ }),
-/* 8 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -878,7 +824,7 @@ function lexRuby(code) {
 }
 
 /***/ }),
-/* 9 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -970,7 +916,7 @@ function parseRuby(tokens) {
 }
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -981,11 +927,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = igniteHTMLCode;
 
-var _lex_html = __webpack_require__(11);
+var _lex_html = __webpack_require__(10);
 
 var _lex_html2 = _interopRequireDefault(_lex_html);
 
-var _parse_html = __webpack_require__(14);
+var _parse_html = __webpack_require__(12);
 
 var _parse_html2 = _interopRequireDefault(_parse_html);
 
@@ -1068,7 +1014,7 @@ function igniteHTMLCode(element) {
 }
 
 /***/ }),
-/* 11 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1078,6 +1024,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = lexHTML;
+
+var _html = __webpack_require__(11);
+
 String.prototype.last = function () {
   return this[this.length - 1];
 };
@@ -1134,9 +1083,16 @@ function lexHTML(code) {
     targetTokenStack.push({ type: 'space', value: spaces });
   }
 
+  /* Setting functions in tag char mapping */
+  _html.$tagCharMap.set(' ', readSpace);
+  _html.$tagCharMap.set('"', readString);
+  _html.$tagCharMap.set('\'', readString);
+
   function readTag() {
+    /* For lexing HTML tags only */
     var tagTokens = [{ type: 'left-angle-bracket', value: '<' }];
     readChar();
+
     while (currentChar !== undefined) {
       /* End tag if current character is the closing bracket */
       if (currentChar === '>') {
@@ -1146,40 +1102,25 @@ function lexHTML(code) {
         break;
       }
 
-      switch (currentChar) {
-        case ' ':
-          tokenizeLexedValue(tagTokens);
-          readSpace(tagTokens);
-          break;
+      if (_html.$tagCharMap.has(currentChar)) {
+        tokenizeLexedValue(tagTokens);
 
-        case '"':
-        case '\'':
-          tokenizeLexedValue(tagTokens);
-          readString(tagTokens);
-          break;
-
-        case '=':
-          tokenizeLexedValue(tagTokens);
-          tagTokens.push({ type: 'assignment-operator', value: '=' });
+        var value = _html.$tagCharMap.get(currentChar);
+        if (typeof value === 'string') {
+          tagTokens.push({ type: value, value: currentChar });
           readChar();
-          break;
-
-        case '/':
-          tokenizeLexedValue(tagTokens);
-          tagTokens.push({ type: 'slash', value: '/' });
-          readChar();
-          break;
-
-        case '\n':
-          tokenizeLexedValue(tagTokens);
-          tagTokens.push({ type: 'newline', value: '\n' });
-          readChar();
-          break;
-
-        default:
+        } else if (typeof value === 'function') {
+          /* Call function for specific lexing method */
+          value(tagTokens);
+        } else {
+          console.log('Error');
+        }
+      }
+      /* Parse default identifier */
+      else {
           lexedValue += currentChar;
           readChar();
-      }
+        }
     }
 
     /* Push back to the main tokens stack */
@@ -1195,34 +1136,62 @@ function lexHTML(code) {
     }
   }
 
+  /* Setting function as values in character mapping */
+  _html.$charMap.set(' ', readSpace);
+  _html.$charMap.set('<', readTag);
+
   while (currentChar !== undefined) {
-    switch (currentChar) {
-      case ' ':
-        tokenizeLexedValue();
-        readSpace();
-        break;
 
-      case '<':
-        tokenizeLexedValue();
-        readTag();
-        break;
+    /* Maps to special character and convert into tokens */
+    if (_html.$charMap.has(currentChar)) {
+      tokenizeLexedValue();
 
-      case '\n':
-        tokenizeLexedValue();
-        tokens.push({ type: 'newline', value: '\n' });
+      var value = _html.$charMap.get(currentChar);
+      if (typeof value === 'string') {
+        tokens.push({ type: value, value: currentChar });
         readChar();
-        break;
-
-      default:
+      } else if (typeof value === 'function') {
+        /* Call function for specific lexing method */
+        value();
+      } else {
+        console.log('Error');
+      }
+    }
+    /* Parse default identifier */
+    else {
         lexedValue += currentChar;
         readChar();
-    }
+      }
   }
 
   if (lexedValue) tokenizeLexedValue();
 
   return tokens;
 }
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var $charMap = exports.$charMap = new Map([
+/* Implemented a readSpace function in HTML lexing */
+[' ', 'READ_SPACE_FUNC'],
+
+/* Implementad a raedTag function in HTML lexing */
+['<', 'READ_TAG_FUNC'], ['\n', 'newline']]);
+
+var $tagCharMap = exports.$tagCharMap = new Map([
+/* Implemented a readSpace function in HTML lexing */
+[' ', 'READ_SPACE_FUNC'],
+
+/* Implementad a raedString function in HTML lexing */
+['"', 'READ_STRING_FUNC'], ['\'', 'READ_STRING_FUNC'], ['=', 'assignment-operator'], ['/', 'slash'], ['\n', 'newline']]);
 
 /***/ }),
 /* 12 */
@@ -1234,22 +1203,9 @@ function lexHTML(code) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var $tags = exports.$tags = ["a", "abbr", "address", "area", "article", "aside", "audio", "b", "base", "bdi", "bdo", "blockquote", "body", "br", "button", "canvas", "caption", "cite", "code", "col", "colgroup", "data", "datalist", "dd", "del", "details", "dfn", "dialog", "div", "dl", "dt", "em", "embed", "fieldset", "figcaption", "figure", "footer", "form", "h1", "h2", "h3", "h4", "h5", "h6", "head", "header", "hgroup", "hr", "html", "i", "iframe", "img", "input", "ins", "kbd", "keygen", "label", "legend", "li", "link", "main", "map", "mark", "math", "menu", "menuitem", "meta", "meter", "nav", "noscript", "object", "ol", "optgroup", "option", "output", "p", "param", "picture", "pre", "progress", "q", "rb", "rp", "rt", "rtc", "ruby", "s", "samp", "script", "section", "select", "slot", "small", "source", "span", "strong", "style", "sub", "summary", "sup", "svg", "table", "tbody", "td", "template", "textarea", "tfoot", "th", "thead", "time", "title", "tr", "track", "u", "ul", "var", "video", "wbr"];
-
-/***/ }),
-/* 13 */,
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
 exports.default = parseHTML;
 
-var _html = __webpack_require__(12);
+var _html = __webpack_require__(13);
 
 Array.prototype.includes = function (item) {
   return this.indexOf(item) !== -1;
@@ -1279,11 +1235,7 @@ function parseHTML(tokens) {
 
         switch (innerToken.type) {
           case 'default':
-            if (_html.$tags.includes(innerToken.value)) {
-              innerToken.type = 'tag-name';
-            } else if (peekInnerToken && peekInnerToken.type === 'assignment-operator') {
-              innerToken.type = 'attribute';
-            }
+            innerToken.type = _html.$tags.includes(innerToken.value) ? 'tag-name' : 'attribute';
             break;
         }
       }
@@ -1293,6 +1245,72 @@ function parseHTML(tokens) {
   }
 
   return tokens;
+}
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var $tags = exports.$tags = ["a", "abbr", "address", "area", "article", "aside", "audio", "b", "base", "bdi", "bdo", "blockquote", "body", "br", "button", "canvas", "caption", "cite", "code", "col", "colgroup", "data", "datalist", "dd", "del", "details", "dfn", "dialog", "div", "dl", "dt", "em", "embed", "fieldset", "figcaption", "figure", "footer", "form", "h1", "h2", "h3", "h4", "h5", "h6", "head", "header", "hgroup", "hr", "html", "i", "iframe", "img", "input", "ins", "kbd", "keygen", "label", "legend", "li", "link", "main", "map", "mark", "math", "menu", "menuitem", "meta", "meter", "nav", "noscript", "object", "ol", "optgroup", "option", "output", "p", "param", "picture", "pre", "progress", "q", "rb", "rp", "rt", "rtc", "ruby", "s", "samp", "script", "section", "select", "slot", "small", "source", "span", "strong", "style", "sub", "summary", "sup", "svg", "table", "tbody", "td", "template", "textarea", "tfoot", "th", "thead", "time", "title", "tr", "track", "u", "ul", "var", "video", "wbr"];
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.appendNode = appendNode;
+function appendNode(element, params) {
+  /* Create child element */
+  var child = document.createElement(params.name);
+  child.className = params.classList.join(' ');
+  child.id = params.id;
+
+  if (params.attributes) {
+    for (var key in params.attributes) {
+      child.setAttribute(key, params.attributes[key]);
+    }
+  }
+
+  element.appendChild(child);
+
+  /* Append to grand child element */
+  if (params.children) {
+    var _iteratorNormalCompletion = true;
+    var _didIteratorError = false;
+    var _iteratorError = undefined;
+
+    try {
+      for (var _iterator = params.children[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+        var grandChildInfo = _step.value;
+
+        appendNode(child, grandChildInfo);
+      }
+    } catch (err) {
+      _didIteratorError = true;
+      _iteratorError = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion && _iterator.return) {
+          _iterator.return();
+        }
+      } finally {
+        if (_didIteratorError) {
+          throw _iteratorError;
+        }
+      }
+    }
+  }
 }
 
 /***/ })
