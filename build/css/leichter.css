@@ -30,6 +30,7 @@
 .lt-comma { color: #ddd; }
 
 .lt-keyword,
+.lt-html-tag > .lt-attribute,
 .lt-operator  { color: #ff6192; }
 
 .lt-function,
@@ -40,11 +41,16 @@
 
 .lt-global-variable,
 .lt-nullity,
-.lt-escaped-character { color: #FDFF7E; }
+.lt-escaped-character,
+.lt-html-tag > .lt-assignment-operator { color: #FDFF7E; }
 
 .lt-inherited-class,
 .lt-boolean,
-.lt-argument { color: #FFBC61 }
+.lt-argument,
+.lt-html-tag > .lt-left-angle-bracket,
+.lt-html-tag > .lt-left-angle-bracket + .lt-slash,
+.lt-html-tag > .lt-right-angle-bracket,
+.lt-html-tag > .lt-tag-name { color: #FFBC61 }
 
 .lt-string { color: #9AFF76; }
 

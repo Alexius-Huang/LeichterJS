@@ -73,11 +73,23 @@ var Leichter =
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _ignite_python_code = __webpack_require__(1);
+
+var _ignite_python_code2 = _interopRequireDefault(_ignite_python_code);
+
+var _ignite_ruby_code = __webpack_require__(6);
+
+var _ignite_ruby_code2 = _interopRequireDefault(_ignite_ruby_code);
+
+var _ignite_html_code = __webpack_require__(9);
+
+var _ignite_html_code2 = _interopRequireDefault(_ignite_html_code);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var appendNode = __webpack_require__(1).appendNode;
-var ignitePythonCode = __webpack_require__(2).ignitePythonCode;
-var igniteRubyCode = __webpack_require__(6).igniteRubyCode;
+var appendNode = __webpack_require__(14).appendNode;
 
 module.exports = function () {
   function Leichter() {
@@ -104,11 +116,13 @@ module.exports = function () {
 
       switch (this.lang) {
         case 'python':
-          ignitePythonCode(this.element, this.enableEscapedCharacter);
+          (0, _ignite_python_code2.default)(this.element, this.enableEscapedCharacter);
           break;
 
         case 'ruby':
-          igniteRubyCode(this.element);break;
+          (0, _ignite_ruby_code2.default)(this.element);break;
+        case 'html':
+          (0, _ignite_html_code2.default)(this.element);break;
         default:
           console.warn(this.lang + ' lang currently is unsupported!');
       }
@@ -144,62 +158,8 @@ module.exports = function () {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.appendNode = appendNode;
-function appendNode(element, params) {
-  /* Create child element */
-  var child = document.createElement(params.name);
-  child.className = params.classList.join(' ');
-  child.id = params.id;
-
-  if (params.attributes) {
-    for (var key in params.attributes) {
-      child.setAttribute(key, params.attributes[key]);
-    }
-  }
-
-  element.appendChild(child);
-
-  /* Append to grand child element */
-  if (params.children) {
-    var _iteratorNormalCompletion = true;
-    var _didIteratorError = false;
-    var _iteratorError = undefined;
-
-    try {
-      for (var _iterator = params.children[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-        var grandChildInfo = _step.value;
-
-        appendNode(child, grandChildInfo);
-      }
-    } catch (err) {
-      _didIteratorError = true;
-      _iteratorError = err;
-    } finally {
-      try {
-        if (!_iteratorNormalCompletion && _iterator.return) {
-          _iterator.return();
-        }
-      } finally {
-        if (_didIteratorError) {
-          throw _iteratorError;
-        }
-      }
-    }
-  }
-}
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.ignitePythonCode = ignitePythonCode;
-var lexPython = __webpack_require__(3).lexPython;
+exports.default = ignitePythonCode;
+var lexPython = __webpack_require__(2).lexPython;
 var parsePython = __webpack_require__(5).parsePython;
 var className = 'lt';
 
@@ -291,7 +251,7 @@ function ignitePythonCode(element) {
 }
 
 /***/ }),
-/* 3 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -301,8 +261,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.lexPython = lexPython;
+
+var _python = __webpack_require__(3);
+
 var K = __webpack_require__(4);
-var M = __webpack_require__(9).$charMap;
+
 
 String.prototype.last = function () {
   return this[this.length - 1];
@@ -443,19 +406,19 @@ function lexPython(code) {
   }
 
   /* Setting function as values in character mapping */
-  M.set(' ', readSpace);
-  M.set('"', readString);
-  M.set('\'', readString);
-  M.set('#', readComment);
+  _python.$charMap.set(' ', readSpace);
+  _python.$charMap.set('"', readString);
+  _python.$charMap.set('\'', readString);
+  _python.$charMap.set('#', readComment);
 
   /* Start Lexing */
   while (currentChar !== undefined) {
 
     /* Maps to special character and convert into tokens */
-    if (M.has(currentChar)) {
+    if (_python.$charMap.has(currentChar)) {
       tokenizeLexedValue();
 
-      var value = M.get(currentChar);
+      var value = _python.$charMap.get(currentChar);
       if (typeof value === 'string') {
         tokens.push({ type: value, value: currentChar });
         readChar();
@@ -477,6 +440,28 @@ function lexPython(code) {
 
   return tokens;
 }
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var $charMap = exports.$charMap = new Map([
+/* Implemented a readSpace function in python lexing */
+[' ', 'READ_SPACE_FUNC'],
+
+/* Implemented a readString function in python lexing */
+['"', 'READ_STRING_FUNC'], ['\'', 'READ_STRING_FUNC'], ['=', 'operator'], ['+', 'operator'], ['-', 'operator'], ['*', 'operator'], ['/', 'operator'], ['%', 'operator'], ['>', 'operator'], ['<', 'operator'], ['|', 'operator'], ['&', 'operator'], [':', 'colon'], ['[', 'left-bracket'], [']', 'right-bracket'], ['(', 'left-parentheses'], [')', 'right-parentheses'], ['{', 'left-brace'], ['}', 'right-brace'], [',', 'comma'], [';', 'semicolon'], ['\n', 'newline'],
+
+/* Implement a readComment function in python lexing */
+['#', 'READ_COMMENT_FUNC']]);
+
+exports.default = $charMap;
 
 /***/ }),
 /* 4 */
@@ -599,7 +584,7 @@ function parsePython(tokens) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.igniteRubyCode = igniteRubyCode;
+exports.default = igniteRubyCode;
 var lexRuby = __webpack_require__(7).lexRuby;
 var parseRuby = __webpack_require__(8).parseRuby;
 var className = 'lt';
@@ -940,15 +925,393 @@ function parseRuby(tokens) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.default = igniteHTMLCode;
+
+var _lex_html = __webpack_require__(10);
+
+var _lex_html2 = _interopRequireDefault(_lex_html);
+
+var _parse_html = __webpack_require__(12);
+
+var _parse_html2 = _interopRequireDefault(_parse_html);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var className = 'lt';
+
+function igniteHTMLCode(element) {
+  var enableEscapedCharacter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+  var codeString = element.innerText;
+
+  /* Parse the code for the first time into fundamental tokens */
+  var lexedTokens = (0, _lex_html2.default)(codeString);
+
+  /* Secondary parse for complex combination syntax feature */
+  var tokens = (0, _parse_html2.default)(lexedTokens);
+
+  /* Parsing HTML code highlighting */
+  element.innerText = '';
+  var _iteratorNormalCompletion = true;
+  var _didIteratorError = false;
+  var _iteratorError = undefined;
+
+  try {
+    for (var _iterator = tokens[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+      var token = _step.value;
+
+      var codeSegment = document.createElement('span');
+      if (token instanceof Array) {
+        /* Current token is a HTML tag */
+        codeSegment.className = className + ' ' + className + '-html-tag';
+        var _iteratorNormalCompletion2 = true;
+        var _didIteratorError2 = false;
+        var _iteratorError2 = undefined;
+
+        try {
+          for (var _iterator2 = token[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+            var innerToken = _step2.value;
+
+            var innerCodeSegment = document.createElement('span');
+            innerCodeSegment.className = className + ' ' + className + '-' + innerToken.type;
+            innerCodeSegment.innerText = innerToken.value;
+            codeSegment.appendChild(innerCodeSegment);
+          }
+        } catch (err) {
+          _didIteratorError2 = true;
+          _iteratorError2 = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion2 && _iterator2.return) {
+              _iterator2.return();
+            }
+          } finally {
+            if (_didIteratorError2) {
+              throw _iteratorError2;
+            }
+          }
+        }
+      } else {
+        codeSegment.className = className + ' ' + className + '-' + token.type;
+        codeSegment.innerText = token.value;
+      }
+      element.appendChild(codeSegment);
+    }
+  } catch (err) {
+    _didIteratorError = true;
+    _iteratorError = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion && _iterator.return) {
+        _iterator.return();
+      }
+    } finally {
+      if (_didIteratorError) {
+        throw _iteratorError;
+      }
+    }
+  }
+}
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = lexHTML;
+
+var _html = __webpack_require__(11);
+
+String.prototype.last = function () {
+  return this[this.length - 1];
+};
+Array.prototype.includes = function (item) {
+  return this.indexOf(item) !== -1;
+};
+
+function lexHTML(code) {
+  var currentChar = code[0];
+  var peekChar = code[1];
+  var charPosition = 0;
+  var lexedValue = '';
+  var tokens = [];
+
+  function readChar() {
+    charPosition++;
+    currentChar = code[charPosition];
+    peekChar = code[charPosition + 1];
+  }
+
+  function readString() {
+    var targetTokenStack = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : tokens;
+
+    var lexedString = currentChar;
+    readChar();
+
+    /* Single Line String Case */
+    while (currentChar != lexedString[0] && currentChar !== '\n') {
+      lexedString += currentChar;
+      readChar();
+    }
+
+    if (currentChar !== '\n') {
+      /* Current charcacter is the closing string */
+      lexedString += currentChar;
+      readChar();
+    }
+
+    /* Push String Token */
+    targetTokenStack.push({ type: 'string', value: lexedString });
+  }
+
+  function readSpace() {
+    var targetTokenStack = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : tokens;
+
+    var spaces = currentChar;
+    readChar();
+
+    while (currentChar == ' ') {
+      spaces += ' ';
+      readChar();
+    }
+
+    targetTokenStack.push({ type: 'space', value: spaces });
+  }
+
+  /* Setting functions in tag char mapping */
+  _html.$tagCharMap.set(' ', readSpace);
+  _html.$tagCharMap.set('"', readString);
+  _html.$tagCharMap.set('\'', readString);
+
+  function readTag() {
+    /* For lexing HTML tags only */
+    var tagTokens = [{ type: 'left-angle-bracket', value: '<' }];
+    readChar();
+
+    while (currentChar !== undefined) {
+      /* End tag if current character is the closing bracket */
+      if (currentChar === '>') {
+        tokenizeLexedValue(tagTokens);
+        tagTokens.push({ type: 'right-angle-bracket', value: '>' });
+        readChar();
+        break;
+      }
+
+      if (_html.$tagCharMap.has(currentChar)) {
+        tokenizeLexedValue(tagTokens);
+
+        var value = _html.$tagCharMap.get(currentChar);
+        if (typeof value === 'string') {
+          tagTokens.push({ type: value, value: currentChar });
+          readChar();
+        } else if (typeof value === 'function') {
+          /* Call function for specific lexing method */
+          value(tagTokens);
+        } else {
+          console.log('Error');
+        }
+      }
+      /* Parse default identifier */
+      else {
+          lexedValue += currentChar;
+          readChar();
+        }
+    }
+
+    /* Push back to the main tokens stack */
+    tokens.push(tagTokens);
+  }
+
+  function tokenizeLexedValue() {
+    var targetTokenStack = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : tokens;
+
+    if (lexedValue) {
+      targetTokenStack.push({ type: 'default', value: lexedValue });
+      lexedValue = '';
+    }
+  }
+
+  /* Setting function as values in character mapping */
+  _html.$charMap.set(' ', readSpace);
+  _html.$charMap.set('<', readTag);
+
+  while (currentChar !== undefined) {
+
+    /* Maps to special character and convert into tokens */
+    if (_html.$charMap.has(currentChar)) {
+      tokenizeLexedValue();
+
+      var value = _html.$charMap.get(currentChar);
+      if (typeof value === 'string') {
+        tokens.push({ type: value, value: currentChar });
+        readChar();
+      } else if (typeof value === 'function') {
+        /* Call function for specific lexing method */
+        value();
+      } else {
+        console.log('Error');
+      }
+    }
+    /* Parse default identifier */
+    else {
+        lexedValue += currentChar;
+        readChar();
+      }
+  }
+
+  if (lexedValue) tokenizeLexedValue();
+
+  return tokens;
+}
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 var $charMap = exports.$charMap = new Map([
-/* Implemented a readSpace function in python lexing */
+/* Implemented a readSpace function in HTML lexing */
 [' ', 'READ_SPACE_FUNC'],
 
-/* Implemented a readString function in python lexing */
-['"', 'READ_STRING_FUNC'], ['\'', 'READ_STRING_FUNC'], ['=', 'operator'], ['+', 'operator'], ['-', 'operator'], ['*', 'operator'], ['/', 'operator'], ['%', 'operator'], ['>', 'operator'], ['<', 'operator'], ['|', 'operator'], ['&', 'operator'], [':', 'colon'], ['[', 'left-bracket'], [']', 'right-bracket'], ['(', 'left-parentheses'], [')', 'right-parentheses'], ['{', 'left-brace'], ['}', 'right-brace'], [',', 'comma'], [';', 'semicolon'], ['\n', 'newline'],
+/* Implementad a raedTag function in HTML lexing */
+['<', 'READ_TAG_FUNC'], ['\n', 'newline']]);
 
-/* Implement a readComment function in python lexing */
-['#', 'READ_COMMENT_FUNC']]);
+var $tagCharMap = exports.$tagCharMap = new Map([
+/* Implemented a readSpace function in HTML lexing */
+[' ', 'READ_SPACE_FUNC'],
+
+/* Implementad a raedString function in HTML lexing */
+['"', 'READ_STRING_FUNC'], ['\'', 'READ_STRING_FUNC'], ['=', 'assignment-operator'], ['/', 'slash'], ['\n', 'newline']]);
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = parseHTML;
+
+var _html = __webpack_require__(13);
+
+Array.prototype.includes = function (item) {
+  return this.indexOf(item) !== -1;
+}; /*
+    * HTML Parser
+    * 
+    * Basically parser is for the parsing complex token combinations or types
+    */
+
+function parseHTML(tokens) {
+  var tokenPosition = 0;
+  var currentToken = tokens[0];
+  var peekToken = tokens[1];
+
+  function nextToken() {
+    tokenPosition++;
+    currentToken = tokens[tokenPosition];
+    peekToken = tokens[tokenPosition + 1];
+  }
+
+  while (currentToken) {
+    /* Tag Level Parsing */
+    if (currentToken instanceof Array) {
+      for (var i = 0; i < currentToken.length; i++) {
+        var innerToken = currentToken[i];
+        var peekInnerToken = currentToken[i + 1];
+
+        switch (innerToken.type) {
+          case 'default':
+            innerToken.type = _html.$tags.includes(innerToken.value) ? 'tag-name' : 'attribute';
+            break;
+        }
+      }
+    }
+
+    nextToken();
+  }
+
+  return tokens;
+}
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var $tags = exports.$tags = ["a", "abbr", "address", "area", "article", "aside", "audio", "b", "base", "bdi", "bdo", "blockquote", "body", "br", "button", "canvas", "caption", "cite", "code", "col", "colgroup", "data", "datalist", "dd", "del", "details", "dfn", "dialog", "div", "dl", "dt", "em", "embed", "fieldset", "figcaption", "figure", "footer", "form", "h1", "h2", "h3", "h4", "h5", "h6", "head", "header", "hgroup", "hr", "html", "i", "iframe", "img", "input", "ins", "kbd", "keygen", "label", "legend", "li", "link", "main", "map", "mark", "math", "menu", "menuitem", "meta", "meter", "nav", "noscript", "object", "ol", "optgroup", "option", "output", "p", "param", "picture", "pre", "progress", "q", "rb", "rp", "rt", "rtc", "ruby", "s", "samp", "script", "section", "select", "slot", "small", "source", "span", "strong", "style", "sub", "summary", "sup", "svg", "table", "tbody", "td", "template", "textarea", "tfoot", "th", "thead", "time", "title", "tr", "track", "u", "ul", "var", "video", "wbr"];
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.appendNode = appendNode;
+function appendNode(element, params) {
+  /* Create child element */
+  var child = document.createElement(params.name);
+  child.className = params.classList.join(' ');
+  child.id = params.id;
+
+  if (params.attributes) {
+    for (var key in params.attributes) {
+      child.setAttribute(key, params.attributes[key]);
+    }
+  }
+
+  element.appendChild(child);
+
+  /* Append to grand child element */
+  if (params.children) {
+    var _iteratorNormalCompletion = true;
+    var _didIteratorError = false;
+    var _iteratorError = undefined;
+
+    try {
+      for (var _iterator = params.children[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+        var grandChildInfo = _step.value;
+
+        appendNode(child, grandChildInfo);
+      }
+    } catch (err) {
+      _didIteratorError = true;
+      _iteratorError = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion && _iterator.return) {
+          _iterator.return();
+        }
+      } finally {
+        if (_didIteratorError) {
+          throw _iteratorError;
+        }
+      }
+    }
+  }
+}
 
 /***/ })
 /******/ ]);
